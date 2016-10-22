@@ -2,6 +2,10 @@
 
 第二天：实现登录注册
  	   注册：
-              包含字段（userName，passWord， 绑定email salt（用于加密）） 
+              包含字段（userName，passWord， 绑定email salt（用于加密））
 	      post方式
 	      请求路径：“/register”
+
+           登录
+		post方式
+                请求路径  /login
