@@ -8,7 +8,10 @@
     <form action="http://localhost:3000/login" method="post">
         账号：<input type="text" placeholder="请输入账号" name="userName"/><br/>
         输入密码：<input type="password" placeholder="请输入密码" name="passWord"/><br/>
-        <input type="submit" value="submit" /><br/> 
+        <input type="submit" value="登录" />
+		<input type="submit" value="注册页面" onclick='window.open("http://localhost:3000/register", "_self");return false;' />
+		<input type="submit" value="修改密码页面" onclick='window.open("http://localhost:3000/changePassword", "_self");return false;' />
+		<br/> 
     </form>
   </body>
 </html>

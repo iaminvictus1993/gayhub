@@ -13,13 +13,17 @@ module.exports = {
             required: true,
 			set: pbkdf2.encrypt//引入pbkdf2Sync加密方法
         },
-        // email: {
-            // type: String,
-            // required: true
-        // },
+        email: {
+            type: String,
+            required: true
+        },
         salt: {
             type: String,
+			//set:pbkdf2.returnSalt
 			default:pbkdf2.returnSalt()
-        }
+        },
+		emailCode:{
+			type: Number
+		}
     }
 };

@@ -7,11 +7,40 @@
     <h1><%= title %></h1>
     <form action="http://localhost:3000/register" method="post">
         账号：<input type="text" placeholder="请输入账号" name="userName"/><br/>
-        <!--邮箱：<input type="email" id="em1" placeholder="请输入邮箱" name="email"/><br/>-->
-        <!--邮箱验证码：<input type="text" placeholder="请输入邮箱验证码" name="emailCode"/><br/>-->
+        邮箱：<input type="email" id="em" placeholder="请输入邮箱" name="email"/><button onclick='aa(event);'>获取邮箱验证码</button><br/>
+        邮箱验证码：<input type="text" placeholder="请输入邮箱验证码" name="emailCode"/><br/>
         输入密码：<input type="password" placeholder="请输入密码" name="passWord1"/><br/>
         确认密码：<input type="password" placeholder="请确认密码" name="passWord2"/><br/>
-        <input type="submit" value="submit" /><br/> 
+        <input type="submit" value="注册" />
+		<input type="submit" value="登录页面" onclick='window.open("http://localhost:3000/login", "_self");return false;'/>
+		<input type="submit" value="修改密码" /><br/> 
     </form>
+	<script>
+		function aa(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var temEmail = document.getElementById('em').value;
+			console.log(temEmail);
+			//对temEmail编码
+			var email = encodeURIComponent(temEmail);
+			console.log(email);
+			//发送ajax请求
+			var xhr;
+			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+				xhr=new XMLHttpRequest();
+			}
+			else {// code for IE6, IE5
+				xhr=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xhr.onreadystatechange=function() {
+				if (xhr.readyState==4 && xhr.status==200) {
+					console.log('发送完成');
+				}
+			}
+			xhr.open("POST","http://localhost:3000/sendEmailCode",true);
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.send("email="+email);
+		}		
+	</script>
   </body>
 </html>
