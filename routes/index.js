@@ -30,6 +30,11 @@ router.get('/changePassword', function(req, res, next) {
     res.render('changePassword', {title: '修改密码页面'});
 });
 
+//渲染我的信息页面
+router.get('/myInfo', function(req, res, next) {
+    res.render('myInfo', {title: '我的信息页面'});
+});
+
 var setRandomCode = function(email, randomVal) {
 	temCode = {
 		email: email,
@@ -82,7 +87,7 @@ router.post('/register', function(req, res, next) {
 				res.send({msg: 'no data'});
 				return;
 			}
-            res.send({ok: 1, msg: '创建成功'});
+            res.redirect("/login");
         });
     });
 });
