@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -24,6 +26,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+	secret: 'rianran1993',
+	maxAge: 1000*60,
+	resave: false,
+	saveUninitialized: true,
+	store: new RedisStore({
+		host: '127.0.0.1',
+		port: 6379
+	})
+}));
 app.use('/', routes);
 app.use('/users', users);
 

@@ -22,7 +22,11 @@ router.get('/login', function(req, res, next) {
 
 //渲染主页面
 router.get('/home', function(req, res, next) {
-    res.render('home', {title: '主页面'});
+	if(!req.session.user) {
+		res.send({msg: '用户未登录'});
+	}else{
+		res.render('home', {title: '主页面'});
+	}
 });
 
 //渲染修改密码页面
@@ -33,6 +37,22 @@ router.get('/changePassword', function(req, res, next) {
 //渲染我的信息页面
 router.get('/myInfo', function(req, res, next) {
     res.render('myInfo', {title: '我的信息页面'});
+});
+router.get('/clear', function(req, res, next) {
+    try{req.session.count = null;}catch(err){res.send(err);};
+	res.send('dss');
+});
+//测试redis存session
+router.get('/testSession', function(req, res, next) {
+	var count = req.session.count;
+    if(!count) {
+		req.session.count = 1;
+		res.send('第一次访问');
+	}
+	if(count) {
+		req.session.count++;
+		res.send('地'+count+'ci');
+	}
 });
 
 var setRandomCode = function(email, randomVal) {
@@ -109,7 +129,12 @@ router.post('/login', function(req, res, next) {
         }
 		if(userData) {
 			var cryptoPwd = crypto.pbkdf2Sync(passWord,userData.salt,100,8,'sha512').toString('hex');
-			cryptoPwd === userData.passWord ? res.redirect('/home') : res.send({msg: '密码错误'});
+			if(cryptoPwd === userData.passWord) {
+				req.session.user = userData.userName;
+				res.redirect('/home')
+			}else{
+				res.send({msg: '密码错误'});
+			}
 		}
     });
 });
