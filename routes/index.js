@@ -4,9 +4,26 @@ var crypto = require('crypto');
 var pbkdf2 = require('../pbkdf2');
 var temCode;
 
+
+router.get('/getSession', function(req, res, next) {
+    req.session.reload(function(err) {
+		if(err) {
+			return res.send(err);
+		}
+		res.send(req.session);
+	});
+	console.dir(req.session);
+	//res.send(req.session);
+});
+
+router.get('/plus', function(req, res, next) {
+    delete req.session.count;
+	res.end();
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
+	
 });
 
 //渲染注册页面
@@ -39,8 +56,12 @@ router.get('/myInfo', function(req, res, next) {
     res.render('myInfo', {title: '我的信息页面'});
 });
 router.get('/clear', function(req, res, next) {
-    try{req.session.count = null;}catch(err){res.send(err);};
-	res.send('dss');
+    req.session.destroy(function(err) {
+		if(err) {
+			return res.send(err);
+		}
+	});
+	res.send(req.session);
 });
 //测试redis存session
 router.get('/testSession', function(req, res, next) {
@@ -51,7 +72,7 @@ router.get('/testSession', function(req, res, next) {
 	}
 	if(req.session.count) {
 		req.session.count++;
-		res.send('第'+count+'ci');
+		res.send('第'+req.session.count+'ci');
 	}
 });
 
@@ -77,7 +98,7 @@ router.post('/register', function(req, res, next) {
         res.send({"msg": '两次输入密码不一致，请核对'});
         return;
     }
-	if((getRandomCode().temCode != emailCode) || getRandomCode().email != email) {
+	if(req.session.bindEmailCode != emailCode) {
 		res.send({"msg": '邮箱验证码不匹配，请核对'});
 		return;
 	}
@@ -146,8 +167,13 @@ router.post('/sendEmailCode', function(req, res, next) {
 	var email = decodeURIComponent(req.body.email);
 	//todo 验证邮箱合法性
 	//将随机值传给temCode
-	setRandomCode(email, randomCode);
+	// setRandomCode(email, randomCode);
+	req.session.bindEmailCode = randomCode;
+	setTimeout(function() {
 
+		delete req.session.bindEmailCode;
+
+	},1000*10);	
 	require('../nodemailer')(email, 'gayhub验证码确认信息', html, function(err, data) {
 		if(err) {
 			res.send(err);
@@ -177,28 +203,40 @@ router.post('/sendEmailCodeForChangePWD', function(req, res, next) {
 			res.send({msg: 'no data'});
 			return;
 		}
-		data.emailCode = randomCode;
-		data.save(function(err, saveData) {
-			if(err) {
-				res.send(err);
-				return;
-			}
-			if(!saveData) {
-				res.send({msg: 'no saveData'});
-				return;
-			}
-			require('../nodemailer')(data.email, 'gayhub验证码确认信息', html, function(err, data) {
+		// data.emailCode = randomCode;
+		// data.save(function(err, saveData) {
+			// if(err) {
+				// res.send(err);
+				// return;
+			// }
+			// if(!saveData) {
+				// res.send({msg: 'no saveData'});
+				// return;
+			// }
+			req.session.emailCodeForCPD = randomCode;
+			//设定修改密码邮箱验证码有效时间，但是TMD不是时间不准，就是完全失效。
+			setTimeout(function() {
+				if(!req.session.emailCodeForCPD) {
+					console.log('not exist');
+				}else{
+					console.log(typeof req.session);
+					delete req.session.emailCodeForCPD;
+					console.dir(req.session);
+				}
+				//return res.send({msg: 'dsffsfsfsfdsfs'});
+			},1000*10);
+			require('../nodemailer')(data.email, 'gayhub验证码确认信息', html, function(err, sendData) {
 				if(err) {
 					res.send(err);
 					return;
 				}
-				if(!data) {
-					res.send('data');
+				if(!sendData) {
+					res.send('sendData');
 					return;
 				}
-				res.send(data);
+				res.send(sendData);
 			});					
-		});
+		// });
 	});
 });
 
@@ -224,7 +262,8 @@ router.post("/changePassword", function(req, res, next) {
 			return;
 		}
 		//return res.send({"html": emailCode, "data": data.emailCode});
-		if(data.emailCode != Number(emailCode)) {
+		// if(data.emailCode != Number(emailCode)) {
+		if(req.session.emailCodeForCPD != Number(emailCode)) {
 			res.send('验证码错误');
 			return;
 		}
@@ -268,11 +307,14 @@ var uploads = multer({
 });
 //处理提交的个人信息
 router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
+	if(!req.session.user) {
+		res.send({msg: '用户未登录'});
+		return;
+	}
     //把这些信息更新到相应user数据中
-    //res.send({a:req.body,c:req.file});
     var updateInfo = {};
-    //处理路径
-    updateInfo.logoPath = path.normalize('http://localhost:3000/'+req.file.path.slice(0,6));
+    //处理路径,用以后面<img>的src
+    updateInfo.logoPath = path.normalize('http://localhost:3000/'+req.file.path.slice(7));
     updateInfo.name = req.body.name;
     updateInfo.age = req.body.age;
     updateInfo.sex = req.body.sex;
