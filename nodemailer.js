@@ -40,7 +40,8 @@ module.exports = function (to, sub, html, callback) {
     };
     transporter.sendMail(options, function(error, info){
         if(error){
-            res.send(error);
+            callback(error);
+            return;
         }else{
             callback(null, {
 				'ok': 1, 

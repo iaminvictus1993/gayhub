@@ -24,9 +24,9 @@ router.get('/login', function(req, res, next) {
 router.get('/home', function(req, res, next) {
 	if(!req.session.user) {
 		res.send({msg: '用户未登录'});
-	}else{
-		res.render('home', {title: '主页面'});
 	}
+    res.render('home', {title: '主页面'});
+
 });
 
 //渲染修改密码页面
@@ -44,14 +44,14 @@ router.get('/clear', function(req, res, next) {
 });
 //测试redis存session
 router.get('/testSession', function(req, res, next) {
-	var count = req.session.count;
-    if(!count) {
+	//var count = req.session.count;
+    if(!req.session.count) {
 		req.session.count = 1;
 		res.send('第一次访问');
 	}
-	if(count) {
+	if(req.session.count) {
 		req.session.count++;
-		res.send('地'+count+'ci');
+		res.send('第'+count+'ci');
 	}
 });
 
@@ -130,7 +130,7 @@ router.post('/login', function(req, res, next) {
 		if(userData) {
 			var cryptoPwd = crypto.pbkdf2Sync(passWord,userData.salt,100,8,'sha512').toString('hex');
 			if(cryptoPwd === userData.passWord) {
-				req.session.user = userData.userName;
+				req.session.user = userData;
 				res.redirect('/home')
 			}else{
 				res.send({msg: '密码错误'});
@@ -251,5 +251,48 @@ router.post("/changePassword", function(req, res, next) {
 			});					
 		});
 	});
+});
+
+var multer = require('multer');
+var path = require('path');
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, './public/uploads');
+    },
+    filename: function(req, file, callback) {
+        callback(null, file.originalname);
+    }
+});
+var uploads = multer({
+    storage: storage
+});
+//处理提交的个人信息
+router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
+    //把这些信息更新到相应user数据中
+    //res.send({a:req.body,c:req.file});
+    var updateInfo = {};
+    //处理路径
+    updateInfo.logoPath = path.normalize('http://localhost:3000/'+req.file.path.slice(0,6));
+    updateInfo.name = req.body.name;
+    updateInfo.age = req.body.age;
+    updateInfo.sex = req.body.sex;
+    updateInfo.sexFor = req.body.sexFor;
+    var user = global.offerModel.getModel('user');
+    user.findOneAndUpdate({
+        "userName": req.session.user.userName
+    }, updateInfo, {
+        new: true,
+        upsert: true
+    },function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.send({msg: 'no data'});
+            return;
+        }
+        res.send(data);
+    });
 });
 module.exports = router;

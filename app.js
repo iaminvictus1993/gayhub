@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
 	secret: 'rianran1993',
-	maxAge: 1000*60,
+	maxAge: 1000*50,
 	resave: false,
 	saveUninitialized: true,
 	store: new RedisStore({
