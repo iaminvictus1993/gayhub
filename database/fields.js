@@ -19,7 +19,7 @@ module.exports = {
         },
         salt: {
             type: String,
-			//set:pbkdf2.returnSalt
+			// set:pbkdf2.returnSalt
 			default:pbkdf2.returnSalt()
         },
 		emailCode:{

@@ -1,19 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var pbkdf2 = require('../pbkdf2');
-var temCode;
-
 
 router.get('/getSession', function(req, res, next) {
-    req.session.reload(function(err) {
-		if(err) {
-			return res.send(err);
-		}
-		res.send(req.session);
-	});
-	console.dir(req.session);
-	//res.send(req.session);
+	res.send(req.session);
 });
 
 router.get('/plus', function(req, res, next) {
@@ -41,6 +31,7 @@ router.get('/login', function(req, res, next) {
 router.get('/home', function(req, res, next) {
 	if(!req.session.user) {
 		res.send({msg: '用户未登录'});
+		return;
 	}
     res.render('home', {title: '主页面'});
 
@@ -76,16 +67,6 @@ router.get('/testSession', function(req, res, next) {
 	}
 });
 
-var setRandomCode = function(email, randomVal) {
-	temCode = {
-		email: email,
-		temCode: randomVal
-	};
-};
-
-var getRandomCode = function() {
-	return temCode;
-};
 //注册账号功能
 router.post('/register', function(req, res, next) {
     var userName = req.body.userName;
@@ -116,7 +97,6 @@ router.post('/register', function(req, res, next) {
         //不存在则创建新用户数据
         user.create({
             "userName": userName,
-			//"salt": 'dsafdf',
 			"email": email,
             "passWord": passWord1.toString()//crypto加密参数需为字符
         }, function(err, data) {
@@ -139,7 +119,7 @@ router.post('/login', function(req, res, next) {
     var passWord = req.body.passWord;
     var user = global.offerModel.getModel('user');
     //查找数据库中是否已有该用户
-    user.findOne({"userName": userName}).exec(function(err, userData) {
+    user.findOne({"userName": userName}, function(err, userData) {
         if(err) {
             res.send(err);
             return;
@@ -148,6 +128,7 @@ router.post('/login', function(req, res, next) {
 			res.send({msg: '没有该用户'});
 			return;
         }
+		console.log(typeof passWord);
 		if(userData) {
 			var cryptoPwd = crypto.pbkdf2Sync(passWord,userData.salt,100,8,'sha512').toString('hex');
 			if(cryptoPwd === userData.passWord) {
@@ -170,9 +151,7 @@ router.post('/sendEmailCode', function(req, res, next) {
 	// setRandomCode(email, randomCode);
 	req.session.bindEmailCode = randomCode;
 	setTimeout(function() {
-
 		delete req.session.bindEmailCode;
-
 	},1000*10);	
 	require('../nodemailer')(email, 'gayhub验证码确认信息', html, function(err, data) {
 		if(err) {
@@ -203,40 +182,28 @@ router.post('/sendEmailCodeForChangePWD', function(req, res, next) {
 			res.send({msg: 'no data'});
 			return;
 		}
-		// data.emailCode = randomCode;
-		// data.save(function(err, saveData) {
-			// if(err) {
-				// res.send(err);
-				// return;
-			// }
-			// if(!saveData) {
-				// res.send({msg: 'no saveData'});
-				// return;
-			// }
-			req.session.emailCodeForCPD = randomCode;
-			//设定修改密码邮箱验证码有效时间，但是TMD不是时间不准，就是完全失效。
-			setTimeout(function() {
-				if(!req.session.emailCodeForCPD) {
-					console.log('not exist');
-				}else{
-					console.log(typeof req.session);
-					delete req.session.emailCodeForCPD;
-					console.dir(req.session);
-				}
-				//return res.send({msg: 'dsffsfsfsfdsfs'});
-			},1000*10);
-			require('../nodemailer')(data.email, 'gayhub验证码确认信息', html, function(err, sendData) {
-				if(err) {
-					res.send(err);
-					return;
-				}
-				if(!sendData) {
-					res.send('sendData');
-					return;
-				}
-				res.send(sendData);
-			});					
-		// });
+		req.session.emailCodeForCPD = randomCode;
+		//设定修改密码邮箱验证码有效时间，但是TMD不是时间不准，就是完全失效。
+		setTimeout(function() {
+			if(!req.session.emailCodeForCPD) {
+				console.log('not exist');
+			}else{
+				console.log(typeof req.session);
+				delete req.session.emailCodeForCPD;
+				console.dir(req.session);
+			}
+		},1000*10);
+		require('../nodemailer')(data.email, 'gayhub验证码确认信息', html, function(err, sendData) {
+			if(err) {
+				res.send(err);
+				return;
+			}
+			if(!sendData) {
+				res.send('sendData');
+				return;
+			}
+			res.send(sendData);
+		});					
 	});
 });
 
@@ -251,6 +218,10 @@ router.post("/changePassword", function(req, res, next) {
 		res.send("两次输入密码不一致，请核对");
 		return;
 	}
+	if(req.session.emailCodeForCPD != Number(emailCode)) {
+		res.send('验证码错误');
+		return;
+	}
 	var user = global.offerModel.getModel('user');
 	user.findOne({"userName": userName}, function(err, data) {
 		if(err) {
@@ -261,20 +232,20 @@ router.post("/changePassword", function(req, res, next) {
 			res.send({msg: 'no data'});
 			return;
 		}
-		//return res.send({"html": emailCode, "data": data.emailCode});
-		// if(data.emailCode != Number(emailCode)) {
-		if(req.session.emailCodeForCPD != Number(emailCode)) {
-			res.send('验证码错误');
-			return;
-		}
-		data.passWord = passWord1;
-		data.save(function(err, saveData) {
+		user.findOneAndUpdate({
+			"userName": userName
+		}, {
+			"passWord": crypto.pbkdf2Sync(passWord1, data.salt, 100, 8, 'sha512').toString('hex')
+		},{
+			new: true,
+			upsert: true
+		}, function(err, updateData) {
 			if(err) {
 				res.send(err);
 				return;
 			}
-			if(!saveData) {
-				res.send({msg: 'no saveData'});
+			if(!updateData) {
+				res.send({msg: 'no updateData'});
 				return;
 			}
 			require('../nodemailer')(data.email, 'gayhub用户密码修改通知', html, function(err, data) {
@@ -287,7 +258,7 @@ router.post("/changePassword", function(req, res, next) {
 					return;
 				}
 				res.send(data);
-			});					
+			});				
 		});
 	});
 });
