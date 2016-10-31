@@ -29,6 +29,7 @@ module.exports = {
         age: Number,
         sex: Number,  //0男 1女 2其它
         sexFor: Number, //0男 1女 2通吃
-        logoPath: String
+        logoPath: String,
+		createAt: {type: Date, default: Date.now()}
     }
 };

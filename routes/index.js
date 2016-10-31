@@ -33,7 +33,24 @@ router.get('/home', function(req, res, next) {
 		res.send({msg: '用户未登录'});
 		return;
 	}
-    res.render('home', {title: '主页面'});
+	var user = global.offerModel.getModel('user');
+	//找出新注册用户（必须有头像），前三位
+	user.find({"logoPath": {$exists: true}})
+		.sort("-createAt")
+		.limit(3)
+		.exec(function(err, docs) {
+			if(err) {
+				res.send(err);
+				return;
+			}
+			if(!docs || docs.length === 0) {
+				res.send({msg: "no docs"})
+				return;
+			}
+			// return res.send(decodeURIComponent(docs[0].logoPath).slice(20));
+			res.render('home', {title: '主页面', source:docs});
+		});
+
 
 });
 
@@ -46,25 +63,11 @@ router.get('/changePassword', function(req, res, next) {
 router.get('/myInfo', function(req, res, next) {
     res.render('myInfo', {title: '我的信息页面'});
 });
-router.get('/clear', function(req, res, next) {
-    req.session.destroy(function(err) {
-		if(err) {
-			return res.send(err);
-		}
-	});
+
+//退出，清楚用户session
+router.get('/exit', function(req, res, next) {
+	delete req.session.user;
 	res.send(req.session);
-});
-//测试redis存session
-router.get('/testSession', function(req, res, next) {
-	//var count = req.session.count;
-    if(!req.session.count) {
-		req.session.count = 1;
-		res.send('第一次访问');
-	}
-	if(req.session.count) {
-		req.session.count++;
-		res.send('第'+req.session.count+'ci');
-	}
 });
 
 //注册账号功能
@@ -276,6 +279,7 @@ var storage = multer.diskStorage({
 var uploads = multer({
     storage: storage
 });
+
 //处理提交的个人信息
 router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
 	if(!req.session.user) {
@@ -285,7 +289,8 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
     //把这些信息更新到相应user数据中
     var updateInfo = {};
     //处理路径,用以后面<img>的src
-    updateInfo.logoPath = path.normalize('http://localhost:3000/'+req.file.path.slice(7));
+    updateInfo.logoPath =encodeURIComponent(path.normalize('http://localhost:3000/'+req.file.path.slice(7)));
+	//return res.send(encodeURIComponent(updateInfo.logoPath));
     updateInfo.name = req.body.name;
     updateInfo.age = req.body.age;
     updateInfo.sex = req.body.sex;
