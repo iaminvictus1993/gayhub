@@ -131,12 +131,11 @@ router.post('/login', function(req, res, next) {
 			res.send({msg: '没有该用户'});
 			return;
         }
-		console.log(typeof passWord);
 		if(userData) {
 			var cryptoPwd = crypto.pbkdf2Sync(passWord,userData.salt,100,8,'sha512').toString('hex');
 			if(cryptoPwd === userData.passWord) {
 				req.session.user = userData;
-				res.redirect('/home')
+				res.redirect('/home');
 			}else{
 				res.send({msg: '密码错误'});
 			}
