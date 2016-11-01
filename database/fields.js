@@ -25,7 +25,7 @@ module.exports = {
 		emailCode:{
 			type: Number
 		},
-        name: String,
+        name: String,    //昵称
         age: Number,
         sex: Number,  //0男 1女 2其它
         sexFor: Number, //0男 1女 2通吃

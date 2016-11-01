@@ -13,6 +13,17 @@
 		.nav{
 			display: inline;
 		}
+        .logo{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            float: left;
+        }
+        #container {
+            border-bottom: 2px solid black;
+            height: 130px;
+            margin-top: 20px;
+        }
 	</style>
   </head>
   <body>
@@ -24,15 +35,32 @@
 		<li><a href="./exit">退出</a></li>
 		<img id='logo'src="/img/4.jpg" class="img-circle">		
 		</ul>
-
+	</div>
 		
 		
 	<% for(var i=0; i<source.length; i++) { %>  
-        <div>  
-            <img src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'>   
-            </img>  
+        <div id="container">
+
+            <img class="logo" src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'></img>
+            <div>昵称：<%= source[i].name %></%=></div>
+            <div>年纪：<%= source[i].age %></div>
+            <div>性别：<% if(source[i].sex ===0 ) {
+                            var a = "男";
+                        }else if(source[i].sex === 1) {
+                            var a = "女";
+                        }else {
+                            var a = "其它";
+                        } %><%= a %></div>
+                        
+            <div>取向：<% if(source[i].sexFor ===0 ) {
+                            var a = "男";
+                        }else if(source[i].sexFor === 1) {
+                            var a = "女";
+                        }else {
+                            var a = "通吃";
+                        } %><%= a %></div>            
         </div>  
     <% } %> 
-	</div>
+
   </body>
 </html>

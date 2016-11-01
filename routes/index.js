@@ -44,8 +44,8 @@ router.get('/home', function(req, res, next) {
 				return;
 			}
 			if(!docs || docs.length === 0) {
-				res.send({msg: "no docs"})
-				return;
+                res.render('home', {title: '主页面', source:docs});
+                return;
 			}
 			// return res.send(decodeURIComponent(docs[0].logoPath).slice(20));
 			res.render('home', {title: '主页面', source:docs});
