@@ -12,8 +12,7 @@ router.get('/plus', function(req, res, next) {
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-	
+    res.render('login', {title: 'Hi~~! Gay Hub'});
 });
 
 //渲染注册页面
@@ -70,7 +69,7 @@ router.get('/changePassword', function(req, res, next) {
 
 //渲染我的信息页面
 router.get('/myInfo', function(req, res, next) {
-    res.render('myInfo', {title: '我的信息页面'});
+    res.render('myInfo', {title: '我的信息页面', currentUser: req.session.user});
 });
 
 //退出，清楚用户session
@@ -274,13 +273,8 @@ router.post("/changePassword", function(req, res, next) {
 	});
 });
 
-router.get("./abc",function(req,res,next){
-    res.send("get");
-});
-
 //处理发布日志
-router.post("./publishLog", function(req, res, next) {
-    return res.send("dsfsdfds");
+router.post("/publishLog", function(req, res, next) {
     var title = encodeURIComponent(req.body.title);
     var content = encodeURIComponent(req.body.content);
     //todo 敏感内容过滤
@@ -299,7 +293,7 @@ router.post("./publishLog", function(req, res, next) {
             res.send({msg: "no data"});
             return;
         }
-        res.end(data);
+        res.send(data);
     });
 });
 

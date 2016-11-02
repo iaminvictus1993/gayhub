@@ -10,20 +10,20 @@
 		<label for="name" class="col-sm-2 control-label">网名</label>
 		<div class="col-sm-10">
 			<input type="text" class="form-control" name="name" 
-				   id="name" placeholder="请输入一个帅气的网名">
+				   id="name" placeholder="请输入一个帅气的网名" value="<%= currentUser.name %>"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="age" class="col-sm-2 control-label">年纪</label>
 		<div class="col-sm-10">
 			<input type="number" class="form-control" name="age" 
-				   id="age" placeholder="请输入年纪">
+				   id="age" placeholder="请输入年纪" value="<%= currentUser.age %>"/>
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="sex" class="col-sm-2 control-label">性别</label>
 		<div class="col-sm-10">
-            <select name="sex">
+            <select name="sex" id="sex">
                 <option value="0">男</option>
                 <option value="1">女</option>
                 <option value="2">其它</option>
@@ -33,7 +33,7 @@
 	<div class="form-group">
         <label for="sexFor" class="col-sm-2 control-label">取向</label>
 		<div class="col-sm-10">
-            <select name="sexFor">
+            <select name="sexFor" id="sexFor">
                 <option value="0">男</option>
                 <option value="1">女</option>
                 <option value="2">通吃</option>
@@ -44,7 +44,7 @@
 		<label for="logo" class="col-sm-2 control-label">头像</label>
 		<div class="col-sm-10">
 			<input type="file" class="form-control" name="logo" 
-				   id="logo">
+				   id="logo"/>
 		</div>
 	</div>
 	</br>
@@ -54,6 +54,27 @@
 		</div>
 	</div>
 </form>
-	<img src='http:\\localhost:3000\\uploads\\3.jpg'></img>
+	<img src="<%= currentUser.logoPath %>"></img>
+	<div style="display:none;" id="temp"><%= currentUser.sex %></div>
+	<script>
+		function setSelected() {
+			var a = document.getElementById("sex").children;
+			var b = new Array(a);
+			b.forEach(function(item) {
+					var c = new Array(item);
+					c.forEach(function(i){
+						(new Array(i)).forEach(function(val) {
+						console.log(val);
+							if(val.value == document.getElementById("temp").innerHTML) {
+							val.selected = "selected";
+							}
+						});
+
+						
+					});
+				});
+		}
+		window.onload = setSelected;
+	</script>
   </body>
 </html>
