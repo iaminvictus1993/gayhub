@@ -21,11 +21,20 @@ router.get('/register', function(req, res, next) {
     res.render('register', {title: '注册页面'});
 });
 
-//渲染登录页面
-router.get('/login', function(req, res, next) {
-    res.render('login', {title: '登录页面'});
+//渲染注册页面
+router.get('/register2', function(req, res, next) {
+    res.render('register2');
 });
 
+//渲染登录页面
+router.get('/login', function(req, res, next) {
+    res.render('login', {title: 'Hi~~! Gay Hub'});
+});
+
+//渲染发布信息页面
+router.get('/log', function(req, res, next) {
+    res.render('log', {title: '新建日志'});
+});
 
 //渲染主页面
 router.get('/home', function(req, res, next) {
@@ -37,7 +46,7 @@ router.get('/home', function(req, res, next) {
 	//找出新注册用户（必须有头像），前三位
 	user.find({"logoPath": {$exists: true}})
 		.sort("-createAt")
-		.limit(3)
+		//.limit(3)
 		.exec(function(err, docs) {
 			if(err) {
 				res.send(err);
@@ -265,6 +274,35 @@ router.post("/changePassword", function(req, res, next) {
 	});
 });
 
+router.get("./abc",function(req,res,next){
+    res.send("get");
+});
+
+//处理发布日志
+router.post("./publishLog", function(req, res, next) {
+    return res.send("dsfsdfds");
+    var title = encodeURIComponent(req.body.title);
+    var content = encodeURIComponent(req.body.content);
+    //todo 敏感内容过滤
+    var log = global.offerModel.getModel('log');
+    log.create({
+        "title": title,
+        "content": content,
+        "author": req.session.user.name,
+        "time": Date.now()
+    }, function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.send({msg: "no data"});
+            return;
+        }
+        res.end(data);
+    });
+});
+
 var multer = require('multer');
 var path = require('path');
 var storage = multer.diskStorage({
@@ -288,7 +326,7 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
     //把这些信息更新到相应user数据中
     var updateInfo = {};
     //处理路径,用以后面<img>的src
-    updateInfo.logoPath =encodeURIComponent(path.normalize('http://localhost:3000/'+req.file.path.slice(7)));
+    updateInfo.logoPath = encodeURIComponent(path.normalize('http://localhost:3000/'+req.file.path.slice(7)));
 	//return res.send(encodeURIComponent(updateInfo.logoPath));
     updateInfo.name = req.body.name;
     updateInfo.age = req.body.age;
@@ -312,4 +350,5 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
         res.send(data);
     });
 });
+
 module.exports = router;

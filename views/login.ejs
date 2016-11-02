@@ -2,16 +2,41 @@
 <html>
   <head>
     <title><%= title %></title>
+    <style>
+        .container{
+            margin: auto;
+        }
+        #header{
+            font-size:90px;
+            color: gray;
+         
+        }
+        .inputArea{
+            border: 1px solid gray;
+            height:30px;
+            width:182px;
+            border-radius:6%;
+        }
+        .login{
+            background-color: rgba(32, 179, 32, 0.51);
+            border: 1px solid gray;
+            height:30px;
+            width:62px;
+            border-radius:6%;
+        }
+    </style>
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <form action="http://localhost:3000/login" method="post">
-        账号：<input type="text" placeholder="请输入账号" name="userName"/><br/>
-        输入密码：<input type="password" placeholder="请输入密码" name="passWord"/><br/>
-        <input type="submit" value="登录" />
-		<input type="submit" value="注册页面" onclick='window.open("http://localhost:3000/register", "_self");return false;' />
-		<input type="submit" value="修改密码页面" onclick='window.open("http://localhost:3000/changePassword", "_self");return false;' />
+  <body style="background-image:url(./img/9.jpg);display:flex;">
+    <div class="container"><br/><br/><br/><br/><br/><br/><br/><br/>
+    <h1 id="header"><%= title %></h1>
+    <form action="./login" method="post" class="container1">
+        <input class="inputArea" type="text" placeholder="请输入账号"  name="userName"/>&nbsp&nbsp&nbsp
+        <input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" name="passWord"/>&nbsp
+        <input class="login" type="submit" value="登录" />
+		<input class="login" type="submit" value="注册" onclick='window.open("./register", "_self");return false;' />
+		<input class="login" type="submit" value="忘记密码" onclick='window.open("./changePassword", "_self");return false;' />
 		<br/> 
     </form>
+    </div>
   </body>
 </html>

@@ -5,15 +5,15 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <form action="http://localhost:3000/register" method="post">
+    <form action="./register" method="post">
         账号：<input type="text" placeholder="请输入账号" name="userName"/><br/>
         邮箱：<input type="email" id="em" placeholder="请输入邮箱" name="email"/><button onclick='aa(event);'>获取邮箱验证码</button><br/>
         邮箱验证码：<input type="text" placeholder="请输入邮箱验证码" name="emailCode"/><br/>
         输入密码：<input type="password" placeholder="请输入密码" name="passWord1"/><br/>
         确认密码：<input type="password" placeholder="请确认密码" name="passWord2"/><br/>
         <input type="submit" value="注册" />
-		<input type="submit" value="登录页面" onclick='window.open("http://localhost:3000/login", "_self");return false;'/>
-		<input type="submit" value="修改密码" /><br/> 
+		<input type="submit" value="登录页面" onclick='window.open("./login", "_self");return false;'/>
+		<input type="submit" value="修改密码" onclick='window.open("./changePassword", "_self");return false;'/><br/> 
     </form>
 	<script>
 		function aa(event) {
@@ -37,7 +37,7 @@
 					console.log('发送完成');
 				}
 			}
-			xhr.open("POST","http://localhost:3000/sendEmailCode",true);
+			xhr.open("POST","./sendEmailCode",true);
 			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 			xhr.send("email="+email);
 		}		

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{padding: 0;margin: 0;font-size: 13px}
+		ul{list-style: none;}
+		/*注册表单*/
+		.register-form {width: 420px;height: auto;margin: 100px auto;padding:5px 20px 20px 20px;border:1px solid #ccc;border-radius: 10px;}
+		.register-form-info div{margin-top: 16px}
+		.register-form-info input{width: 180px;height: 20px;text-indent: 5px}
+		.register-form-info .register-email{position: relative;}
+		.register-form-info .register-email-msg input{width: 184px}
+		.register-form-info .email-ul{position: absolute;left: 72px;top: 23px;border: 1px solid #ccc;width: 182px;overflow: hidden;display: none;background: #fff}
+		.register-form-info .email-ul li {padding:3px 0 3px 8px;cursor: default;}
+		
+		.register-form-btn {margin-top: 16px;}
+		.form-btn-wrap {margin:0 auto;width: 260px}
+		.register-form-btn button{width: 80px;height: 30px;background: #00d0ff;border: none;border-radius: 5px;font-family: "微软雅黑"}
+	</style>
+</head>
+<body>
+	<form class="register-form" onkeydown = "if(event.keyCode==13)return false";>
+		<div class="register-form-info">
+			<div class="register-name">
+				<label for="reg-name">用 户 名：</label>
+				<input type="text" id="reg-name" placeholder="请输入用户名">
+				<span id="reg-name-tip"></span>
+			</div>
+			<div class="register-passowrd">
+				<label for="reg-passowrd">密 　 码：</label>
+				<input type="password" id="reg-passowrd" placeholder="请输入密码">
+				<span id="reg-passowrd-tip"></span>
+			</div>
+			<div class="register-passowrd-comfirm">
+				<label for="reg-passowrd-comfirm">密码确认：</label>
+				<input type="password" id="reg-passowrd-comfirm" placeholder="请输入密码">
+				<span id="reg-passowrd-comfirm-tip"></span>
+			</div>
+			<div class="register-email">
+				<label for="reg-email">邮 　 箱：</label>
+				<input type="text" id="reg-email" placeholder="请输入邮箱">
+				<span id="reg-email-tip"></span>
+				<ul class="email-ul" id="email-ul">
+					<li><span></span>@qq.com</li>
+					<li><span></span>@163.com</li>
+					<li><span></span>@126.com</li>
+					<li><span></span>@sohu.com</li>
+					<li><span></span>@gmail.com</li>
+				</ul>
+			</div>
+			<div class="register-email-msg">
+				<label for="reg-email-msg">邮箱验证：</label>
+				<input type="button" id="reg-email-msg" value="发送邮箱验证消息">
+				<span id="reg-email-msg-tip"></span>
+			</div>
+		</div>
+		<div class="register-form-btn">
+			<div class="form-btn-wrap">
+				<button id="register-btn" onclick="return false;">注册</button>
+				<button id="login-btn" onclick="return false;">登陆</button>
+			</div>
+		</div>
+	</form>
+	<script>
+		window.onload =function(){
+			var emailUl = document.getElementById("email-ul");
+			var emailLi = emailUl.getElementsByTagName("li");
+			var emailLiText = emailUl.getElementsByTagName("span");
+			//用户名
+			var regName = document.getElementById("reg-name"),regNameTip = document.getElementById("reg-name-tip");
+			//密码
+			var regPassowrd = document.getElementById("reg-passowrd"),regPassowrdTip = document.getElementById("reg-passowrd-tip");
+			//密码校验
+			var regPassowrdComfirm = document.getElementById("reg-passowrd-comfirm"),regPassowrdComfirmTip = document.getElementById("reg-passowrd-comfirm-tip");
+			//邮箱
+			var regEmail = document.getElementById("reg-email"),regEmailTip = document.getElementById("reg-email-tip");
+			var count = 0;
+			//表单验证
+			var onInputCheck = function(params){
+				var domInput = params.domInput,domTip = params.domTip,info = params.info,infoSuccess = params.infoSuccess,infoError = params.infoError,re = params.re;
+				domInput.onfocus = function(){
+					domTip.innerText = info;
+				}
+				domInput.onblur = function(){
+					//密码是否一致的验证
+					if(domInput.id == "reg-passowrd-comfirm"){
+						if(domInput.value == regPassowrd.value){
+							domTip.innerText = infoSuccess;
+						}else{
+							domTip.innerText = infoError;
+						}
+					}
+					if(domInput.value != ""){
+						//正则表达式验证
+						if(re){
+							if(re.test(domInput.value)){
+								domTip.innerText = infoSuccess;
+							}else{
+								domTip.innerText = infoError;
+							}
+						}
+					}else{
+						domTip.innerText = "";
+					}
+					
+				}
+			}
+			//用户名regName,regNameTip,"字母、数字和下划线组成。"
+			onInputCheck({
+				domInput:regName,domTip:regNameTip,re:/^[a-zA-z]\w{3,15}$/,info:"字母、数字和下划线组成。",infoSuccess:"用户名可用",infoError:"不正确的用户名"
+			})
+			//密码
+			onInputCheck({
+				domInput:regPassowrd,domTip:regPassowrdTip,re:/^[1-9a-zA-Z]\w{5,17}$/,info:"6到18位之间。",infoSuccess:"密码可用",infoError:"不正确的密码"
+			})
+			//密码校验
+			onInputCheck({
+				domInput:regPassowrdComfirm,domTip:regPassowrdComfirmTip,info:"请再次输入密码。",infoSuccess:"密码一致",infoError:"密码不一致"
+			})
+			//邮箱
+			onInputCheck({
+				domInput:regEmail,domTip:regEmailTip,info:"请输入正确的邮箱。"
+			})
+			var onCheckEmail = function(domInput,domTip){
+				var emaiRe = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+				if(emaiRe.test(domInput.value)){
+					domTip.innerText = "邮箱可用";
+				}else if(domInput.value == ""){
+					domTip.innerText = "";
+				} 
+				else{
+					domTip.innerText = "邮箱不合法";
+				}
+			}
+			//邮箱自动列表弹出及点击选择
+			var clearSelect = function(){
+				for(var i = 0 ; i < emailLi.length; i ++){
+					if(emailLi[i].style.background == "rgb(187, 187, 187)"){
+						count = i;
+					}
+					emailLi[i].style.background = "#fff";
+				}
+			}
+			for(var i = 0 ;i < emailLi.length ; i++){
+				emailLi[i].onclick = function(){
+					regEmail.value = this.innerText;
+					emailUl.style.display = "none";
+					//onCheckEmail(regEmail,regEmailTip)
+				}
+				emailLi[i].onmouseover = function(){
+					for(var i = 0 ; i < emailLi.length ; i++){
+						emailLi[i].style.background = "#fff"
+					}
+					this.style.background = "#bbb"
+				}
+			}
+			regEmail.oninput = function(){
+				if(regEmail.value.length > 3){
+					emailUl.style.display = "block";
+					for(var i = 0 ; i < emailLiText.length; i ++){
+						emailLiText[i].innerText = regEmail.value;
+					}
+				}
+				if(regEmail.value.length <= 3){
+					emailUl.style.display = "none";
+				}
+			}
+			regEmail.onkeydown = function(evt){
+				var e = evt || window.event;
+				//下方向键
+				if(e.keyCode == 40){
+					clearSelect();
+					count++;
+					if(count > emailLi.length-1){
+						count = 0;
+					}
+					emailLi[count].style.background = "#bbb";
+				}
+				//上方向键
+				if(e.keyCode == 38){
+					clearSelect();
+					count--;
+					if(count < 0){
+						count = emailLi.length-1;
+					}
+					emailLi[count].style.background = "#bbb";
+				}
+				//回车键
+				if(e.keyCode == 13){
+					regEmail.value = emailLi[count].innerText;
+					emailUl.style.display = "none";
+					onCheckEmail(regEmail,regEmailTip)
+				}
+			}
+			document.onclick = function(evt){
+				var dom = evt.target;
+				if(dom.id == "reg-email"){
+				}else{
+					onCheckEmail(regEmail,regEmailTip);
+					emailUl.style.display = "none";
+				}
+			} 
+		}
+	</script>
+</body>
+</html>

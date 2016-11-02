@@ -28,7 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
 	secret: 'rianran1993',
-	maxAge: {maxAge: 10000},
+    name: 'sessionCookie',
+	cookie: {maxAge: 1000*60*60},
 	resave: false, //是指每次请求都重新设置session cookie，假设你的cookie是10分钟过期，每次请求都会再设置10分钟
 	saveUninitialized: true, //是指无论有没有session cookie，每次请求都设置个session cookie ，默认给个标示为 connect.sid
 	store: new RedisStore({

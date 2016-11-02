@@ -31,5 +31,14 @@ module.exports = {
         sexFor: Number, //0男 1女 2通吃
         logoPath: String,
 		createAt: {type: Date, default: Date.now()}
+    },
+    log:{
+        title: String,   //标题
+        author: String,  //作者
+        content: String,
+        picture: String,
+        time: Date,
+        praise: {type: Number, default: 0},  //点赞数量
+        collect: {type: Number, default: 0} //收藏数量
     }
 };

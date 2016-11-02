@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+        .container{
+            margin: auto;
+        }
+        #header{
+            font-size:90px;
+            color: gray;
+         
+        }
+        .inputArea{
+            border: 1px solid gray;
+            height:30px;
+            width:500px;
+        }
+        .login{
+            background-color: rgba(32, 179, 32, 0.51);
+            border: 1px solid gray;
+            height:30px;
+            width:62px;
+            border-radius:6%;
+        }
+        .textarea{
+            height:380px;
+        }
+    </style>
+  </head>
+  <body style="background-image:url(./img/9.jpg);display:flex;">
+    <div class="container"><br/><br/><br/><br/><br/>
+    <h1 id="header"><%= title %></h1>
+    <form action="./publishLog" method="post" class="container1">
+        <input class="inputArea" type="text" placeholder="标题"  name="title"/><br/><br/>
+        <textarea class="inputArea textarea" placeholder="正文" name="content"></textarea><br/><br/>
+        <input class="login" type="submit" value="发布" />
+		<input class="login" type="submit" value="重置" onclick='window.open("./register", "_self");return false;' />
+		<input class="login" type="submit" value="我的日志" onclick='window.open("./changePassword", "_self");return false;' />
+		<br/> 
+    </form>
+    </div>
+  </body>
+</html>

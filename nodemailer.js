@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
 
 // var mailOptions = {
     // from: '"ranwei 👥" <vainran@163.com>',// sender address
-    // to: '623992160@qq.com', // list of receivers
+    // to: '***@qq.com', // list of receivers
     // subject: 'Hello ✔', // Subject line
     //text: 'Hello world ranwei',// plaintext body
     // html: '<br/><br/><b>Hello world ✔</b>',// html body
