@@ -12,7 +12,7 @@ router.get('/plus', function(req, res, next) {
 });
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('login', {title: 'Hi~~! Gay Hub'});
+    res.render('login', {title: 'Hello! Gay Hub'});
 });
 
 //渲染注册页面
@@ -27,7 +27,7 @@ router.get('/register2', function(req, res, next) {
 
 //渲染登录页面
 router.get('/login', function(req, res, next) {
-    res.render('login', {title: 'Hi~~! Gay Hub'});
+    res.render('login', {title: 'Hello! Gay Hub'});
 });
 
 //渲染发布信息页面
@@ -38,7 +38,7 @@ router.get('/log', function(req, res, next) {
 //渲染主页面
 router.get('/home', function(req, res, next) {
 	if(!req.session.user) {
-		res.send({msg: '用户未登录'});
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
 		return;
 	}
 	var user = global.offerModel.getModel('user');
@@ -69,7 +69,22 @@ router.get('/changePassword', function(req, res, next) {
 
 //渲染我的信息页面
 router.get('/myInfo', function(req, res, next) {
-    res.render('myInfo', {title: '我的信息页面', currentUser: req.session.user});
+    if(!req.session.user) {
+        res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+        return;
+    }
+    var user = global.offerModel.getModel('user');
+    user.findOne({"userName": req.session.user.userName},function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.send({msg: "no data"});
+            return;
+        }
+        res.render('myInfo', {title: '我的信息页面', currentUser: data, logoPath: decodeURIComponent(data.logoPath)});
+    });
 });
 
 //退出，清楚用户session
@@ -102,7 +117,7 @@ router.post('/register', function(req, res, next) {
             return;
         }
         if(userData) {
-            res.send({msg: '用户已存在，请直接登录'});
+            res.send("<h1>用户已存在登录，请直接登录</h1><br/><a href='./login'>前往登录</a>");
             return;
         }
         //不存在则创建新用户数据
@@ -119,7 +134,7 @@ router.post('/register', function(req, res, next) {
 				res.send({msg: 'no data'});
 				return;
 			}
-            res.redirect("/login");
+            res.status(200).redirect("/login");
         });
     });
 });
@@ -136,7 +151,7 @@ router.post('/login', function(req, res, next) {
             return;
         }
         if(!userData) {
-			res.send({msg: '没有该用户'});
+			res.send("<h1>没有该用户，请注册</h1><br/><a href='./register'>前往注册</a>");
 			return;
         }
 		if(userData) {
@@ -145,7 +160,7 @@ router.post('/login', function(req, res, next) {
 				req.session.user = userData;
 				res.redirect('/home');
 			}else{
-				res.send({msg: '密码错误'});
+				res.send("<h1>密码错误，若忘记密码请修改密码</h1><br/><a href='./changePassword'>前往修改密码</a>");
 			}
 		}
     });
@@ -280,6 +295,7 @@ router.post("/publishLog", function(req, res, next) {
     //todo 敏感内容过滤
     var log = global.offerModel.getModel('log');
     log.create({
+        "userId": req.session.user._id,
         "title": title,
         "content": content,
         "author": req.session.user.name,
@@ -293,7 +309,25 @@ router.post("/publishLog", function(req, res, next) {
             res.send({msg: "no data"});
             return;
         }
-        res.send(data);
+        //将log与对应用户相互关联起来
+        var user = global.offerModel.getModel('user');
+        user.findByIdAndUpdate(req.session.user._id, {$set:{
+            "logId": data._id
+        }}, {
+            new: true,
+            upsert: true
+        })
+        .exec(function(err, userData) {
+            if(err) {
+                res.send(err);
+                return;
+            }
+            if(!userData) {
+                res.send({msg: "no userData"});
+                return;
+            }
+            res.send(data);
+        });
     });
 });
 
@@ -314,7 +348,7 @@ var uploads = multer({
 //处理提交的个人信息
 router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
 	if(!req.session.user) {
-		res.send({msg: '用户未登录'});
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
 		return;
 	}
     //把这些信息更新到相应user数据中

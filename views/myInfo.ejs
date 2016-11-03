@@ -54,25 +54,28 @@
 		</div>
 	</div>
 </form>
-	<img src="<%= currentUser.logoPath %>"></img>
-	<div style="display:none;" id="temp"><%= currentUser.sex %></div>
+	<img src="<%= logoPath.slice(20) %>"></img>  <!--需用相对路径，否者会有重复的域名-->
+	<div style="display:none1;" id="temp1"><%= currentUser.sex %></div>
+    <div style="display:none1;" id="temp2"><%= currentUser.sexFor %></div>
 	<script>
 		function setSelected() {
 			var a = document.getElementById("sex").children;
-			var b = new Array(a);
-			b.forEach(function(item) {
-					var c = new Array(item);
-					c.forEach(function(i){
-						(new Array(i)).forEach(function(val) {
-						console.log(val);
-							if(val.value == document.getElementById("temp").innerHTML) {
-							val.selected = "selected";
-							}
-						});
-
-						
-					});
-				});
+            //所获得的元素节点是类数组，故用call绑定执行上下文
+            Array.prototype.forEach.call(a, function(item) {
+                if(item.value == document.getElementById("temp1").innerHTML){
+                    console.log(item.value);
+                    item.setAttribute('selected', 'selected');
+                    console.log(item);
+                }
+            });
+			var b = document.getElementById("sexFor").children;
+            Array.prototype.forEach.call(b, function(item) {
+                if(item.value == document.getElementById("temp2").innerHTML){
+                    console.log(item.value);
+                    item.setAttribute('selected', 'selected');
+                    console.log(item);
+                }
+            });           
 		}
 		window.onload = setSelected;
 	</script>

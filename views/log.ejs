@@ -26,19 +26,34 @@
         .textarea{
             height:380px;
         }
+        #myLog{
+            float: left;
+            display: none;
+        }
     </style>
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
+    <div id="myLog">ddssssssssssssssssdd</div>
     <div class="container"><br/><br/><br/><br/><br/>
     <h1 id="header"><%= title %></h1>
     <form action="./publishLog" method="post" class="container1">
         <input class="inputArea" type="text" placeholder="标题"  name="title"/><br/><br/>
         <textarea class="inputArea textarea" placeholder="正文" name="content"></textarea><br/><br/>
         <input class="login" type="submit" value="发布" />
-		<input class="login" type="submit" value="重置" onclick='window.open("./register", "_self");return false;' />
-		<input class="login" type="submit" value="我的日志" onclick='window.open("./changePassword", "_self");return false;' />
+		<input class="login" type="submit" value="重置全部" onclick='clearContent(event);return false;' />
+		<input class="login" type="submit" value="我的日志" onclick='return false;' />
 		<br/> 
     </form>
     </div>
+    <script>
+        function clearContent(event) {
+            event.preventDefault();
+			event.stopPropagation();        
+            var nodeArr = document.getElementsByClassName("inputArea");
+            Array.prototype.forEach.call(nodeArr, function(item) {
+                item.value = null;
+            });
+        }
+    </script>
   </body>
 </html>

@@ -4,6 +4,7 @@ var pbkdf2 = require('../pbkdf2');
 //var ObjectId = Schema.types.ObjectId;
 module.exports = {
     user:{
+        logId:{type: Schema.Types.ObjectId, ref: 'log'},
         userName: {
             type: String,
             required: true
@@ -33,6 +34,7 @@ module.exports = {
 		createAt: {type: Date, default: Date.now()}
     },
     log:{
+        userId: {type: Schema.Types.ObjectId, ref: 'user'},
         title: String,   //标题
         author: String,  //作者
         content: String,
