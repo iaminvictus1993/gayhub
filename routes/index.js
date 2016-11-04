@@ -151,7 +151,9 @@ router.post('/login', function(req, res, next) {
             return;
         }
         if(!userData) {
-			res.send("<h1>没有该用户，请注册</h1><br/><a href='./register'>前往注册</a>");
+            req.flash('error', "没有该用户，请注册！");
+            res.redirect('/login');            
+			//res.send("<h1>没有该用户，请注册</h1><br/><a href='./register'>前往注册</a>");
 			return;
         }
 		if(userData) {
@@ -160,7 +162,9 @@ router.post('/login', function(req, res, next) {
 				req.session.user = userData;
 				res.redirect('/home');
 			}else{
-				res.send("<h1>密码错误，若忘记密码请修改密码</h1><br/><a href='./changePassword'>前往修改密码</a>");
+                req.flash('error', "密码错误！");
+                res.redirect('/login');
+				//res.send("<h1>密码错误，若忘记密码请修改密码</h1><br/><a href='./changePassword'>前往修改密码</a>");
 			}
 		}
     });

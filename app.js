@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var session = require('express-session');
+var flash = require('connect-flash');
 var RedisStore = require('connect-redis')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -11,6 +12,8 @@ global.offerModel = require('./database/offerModel');
 mongoose.connect("mongodb://localhost/gayhub");
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var winston = require('winston');
+var expressWinston = require('express-winston');
 
 var app = express();
 
@@ -37,9 +40,38 @@ app.use(session({
 		port: 6379
 	})
 }));
+app.use(flash());
+app.use(function(req, res, next) {
+    res.locals.error = req.flash('error');
+    res.locals.info = req.flash('info');
+    next();
+});
+// 正常请求的日志
+app.use(expressWinston.logger({
+  transports: [
+    new (winston.transports.Console)({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/success.log'
+    })
+  ]
+}));
 app.use('/', routes);
 app.use('/users', users);
-
+// 错误请求的日志
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/error.log'
+    })
+  ]
+}));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -54,6 +86,10 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
+    if(err.status === 404) {
+        res.render('404',{message: err.message});
+        return;
+    }
     res.render('error', {
       message: err.message,
       error: err
@@ -65,6 +101,10 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
+  if(err.status === 404) {
+      res.render('404',{message: err.message});
+      return;
+  } 
   res.render('error', {
     message: err.message,
     error: {}
