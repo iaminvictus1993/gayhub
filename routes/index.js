@@ -32,7 +32,33 @@ router.get('/login', function(req, res, next) {
 
 //渲染发布信息页面
 router.get('/log', function(req, res, next) {
-    res.render('log', {title: '新建日志'});
+	var log = global.offerModel.getModel('log');
+	log.find({
+		userId: req.session.user._id
+	}).exec(function(err, docs) {
+		if(err) {
+			res.send(err);
+			return;
+		}
+		if(!docs || docs.length === 0) {
+			res.render('log', {
+				title: '新建日志',
+				logSource: []
+			});	
+			return;
+		}
+		var newArr = [];
+		docs.forEach(function(item) {
+			item.title = decodeURIComponent(item.title);
+			item.content = decodeURIComponent(item.content);
+			newArr.push(item);
+		});
+		res.render('log', {
+			title: '新建日志',
+			logSource: newArr
+		});		
+	});
+
 });
 
 //渲染主页面
@@ -330,7 +356,7 @@ router.post("/publishLog", function(req, res, next) {
                 res.send({msg: "no userData"});
                 return;
             }
-            res.send(data);
+            res.redirect("/log");
         });
     });
 });
@@ -379,7 +405,7 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
             res.send({msg: 'no data'});
             return;
         }
-        res.send(data);
+        res.redirect("/home");
     });
 });
 

@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
 // 正常请求的日志
 app.use(expressWinston.logger({
   transports: [
-    new (winston.transports.Console)({
+    new winston.transports.Console({
       json: true,
       colorize: true
     }),
@@ -59,7 +59,8 @@ app.use(expressWinston.logger({
   ]
 }));
 app.use('/', routes);
-app.use('/users', users);
+//app.use('/users', users);
+
 // 错误请求的日志
 app.use(expressWinston.errorLogger({
   transports: [

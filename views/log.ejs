@@ -20,7 +20,7 @@
             background-color: rgba(32, 179, 32, 0.51);
             border: 1px solid gray;
             height:30px;
-            width:62px;
+            width:90px;
             border-radius:6%;
         }
         .textarea{
@@ -28,12 +28,37 @@
         }
         #myLog{
             float: left;
+			height: 100%;
             display: none;
+
         }
+		#hah{
+			border-bottom: solid 1px black;
+			width:250px;
+			margin-bottom: 16px;
+		}
+		.cont{
+			height: 18px;
+			overflow: hidden;
+		}
     </style>
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
-    <div id="myLog">ddssssssssssssssssdd</div>
+    <div id="myLog">
+		<h1>我的日志</h1>
+		<% if(logSource.length > 8) {%>
+		<%	var temArry = logSource.slice(0,8);%>
+		<%}temArry.forEach(function(item) { %>
+		<div id="hah">
+			<div class="cont">标题：<%= item.title %></div>
+			<div class="cont">作者：<%= item.author %></div>
+			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
+			<div class="cont">内容：<%= item.content %></div>
+		</div>
+		<% }); %>
+
+		
+	</div>
     <div class="container"><br/><br/><br/><br/><br/>
     <h1 id="header"><%= title %></h1>
     <form action="./publishLog" method="post" class="container1">
@@ -41,7 +66,7 @@
         <textarea class="inputArea textarea" placeholder="正文" name="content"></textarea><br/><br/>
         <input class="login" type="submit" value="发布" />
 		<input class="login" type="submit" value="重置全部" onclick='clearContent(event);return false;' />
-		<input class="login" type="submit" value="我的日志" onclick='return false;' />
+		<input id="displayInfo" class="login" type="submit" value="显示我的日志" onclick='displayMyInfo(event);return false;' />
 		<br/> 
     </form>
     </div>
@@ -54,6 +79,18 @@
                 item.value = null;
             });
         }
+        function displayMyInfo(event) {
+            event.preventDefault();
+			event.stopPropagation();        
+            var myLog = document.getElementById("myLog");
+			if(myLog.style.display != "block") {
+				document.getElementById("displayInfo").value = "隐藏我的日志";
+				myLog.style.display = "block";				
+			}else {
+				document.getElementById("displayInfo").value = "显示我的日志";
+				myLog.style.display = "none";
+			}
+        }		
     </script>
   </body>
 </html>
