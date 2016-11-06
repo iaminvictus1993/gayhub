@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+        #myLog{
+            float: left;
+			height: 100%;
+            display: block;
+
+        }
+		#hah{
+			border-bottom: solid 1px black;
+			width:250px;
+			margin-bottom: 16px;
+		}
+		.cont{
+			height: 18px;
+			overflow: hidden;
+		}
+    </style>
+  </head>
+  <body style="background-image:url(./img/9.jpg);display:flex;">
+    <div id="myLog">
+		<h1>日志列表</h1>
+		<%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
+			<a value="<%= i %>" href="./logList?page=<%= i %>"> <%= i %></a>
+		  <%}%>
+		<%logSource.forEach(function(item) { %>
+		<div id="hah">
+			<div class="cont">标题：<%= item.title %></div>
+			<div class="cont">作者：<%= item.author %></div>
+			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
+			<div class="cont">内容：<%= item.content %></div>
+		</div>
+		<% }); %>
+		<div style="color:yellow;font-size:40px;" onclick='window.open("./log","_self");return false;'>新建日志</div>
+	</div>
+  </body>
+</html>

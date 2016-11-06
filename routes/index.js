@@ -61,6 +61,50 @@ router.get('/log', function(req, res, next) {
 
 });
 
+//渲染日志列表页面
+router.get('/logList', function(req, res, next) {
+	var currentPage = req.query.page;
+	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
+	var log = global.offerModel.getModel('log');
+	log.find({
+		userId: req.session.user._id
+	}).exec(function(err, totaldocs) {
+		if(err) {
+			res.send(err);
+			return;
+		}
+		if(!totaldocs || totaldocs.length === 0) {
+			res.send("<h1>暂未日志数据</h1><br/><a href='./log'>前往发表日志</a>");
+			return;
+		}
+		log.find({
+			userId: req.session.user._id
+		}).skip(skipNum).limit(8).exec(function(err, docs) {
+			if(err) {
+				res.send(err);
+				return;
+			}
+			if(!docs || docs.length === 0) {
+				res.send("<h1>暂未日志数据</h1><br/><a href='./log'>前往发表日志</a>");
+				return;
+			}
+			var newArr = [];
+			docs.forEach(function(item) {
+				item.title = decodeURIComponent(item.title);
+				item.content = decodeURIComponent(item.content);
+				newArr.push(item);
+			});
+			res.render('logList', {
+				title: '日志列表',
+				logSource: newArr,
+				totalSource: totaldocs
+			});		
+		});		
+	});
+
+
+});
+
 //渲染主页面
 router.get('/home', function(req, res, next) {
 	if(!req.session.user) {
