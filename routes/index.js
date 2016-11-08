@@ -32,6 +32,10 @@ router.get('/login', function(req, res, next) {
 
 //渲染发布信息页面
 router.get('/log', function(req, res, next) {
+	if(!req.session.user) {
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		return;
+	}
 	var log = global.offerModel.getModel('log');
 	log.find({
 		userId: req.session.user._id
@@ -63,6 +67,10 @@ router.get('/log', function(req, res, next) {
 
 //渲染日志列表页面
 router.get('/logList', function(req, res, next) {
+	if(!req.session.user) {
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		return;
+	}    
 	var currentPage = req.query.page;
 	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
 	var log = global.offerModel.getModel('log');
@@ -400,6 +408,7 @@ router.post("/publishLog", function(req, res, next) {
                 res.send({msg: "no userData"});
                 return;
             }
+            req.flash("info", "发出成功");
             res.redirect("/log");
         });
     });
