@@ -144,8 +144,13 @@ router.get('/viewLog', function(req, res, next) {
 		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
 		return;
 	}    
-	var currentPage = req.query.page;
-	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
+	try{
+		var currentPage = req.query.page;
+		var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0;
+		// return res.send(skipNum);
+	}catch(err) {
+				console.log(err);
+	}
 	var log = global.offerModel.getModel('log');
 	log.find({
 		userId: req.query.id
@@ -178,7 +183,8 @@ router.get('/viewLog', function(req, res, next) {
 			res.render('viewLog', {
 				title: '日志列表',
 				logSource: newArr,
-				totalSource: totaldocs
+				totalSource: totaldocs,
+				originalUrl: "."+req.originalUrl.slice(0,36)
 			});		
 		});		
 	});

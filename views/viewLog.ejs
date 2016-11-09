@@ -36,7 +36,7 @@
     <div id="myLog">
 		<h1>日志列表</h1>
 		<%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
-			<a value="<%= i %>" href="./viewLog?page=<%= i %>"> <%= i %></a>
+			<a value="<%= i %>" href=<%= originalUrl+"&page="+ i %> > <%= i %></a>
 		  <%}%>
 		<%logSource.forEach(function(item) { %>
 		<div id="hah" onclick="displayLog(event);">
