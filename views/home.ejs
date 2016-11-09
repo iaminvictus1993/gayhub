@@ -62,8 +62,8 @@
                         }else {
                             var a = "通吃";
                         } %><%= a %></div>   
-            <div class="item view" onclick='window.open("./viewLog?id=<%= source[i]._id %>", "_self")'>查看<%= source[i].sexFor ===0?"他":"她" %>的日志</div> 
-            <div class="item view">与<%= source[i].sexFor ===0?"他":"她" %>聊天</div>            
+            <div class="item view" onclick='window.open("./viewLog?id=<%= source[i]._id %>", "_self")'>查看<%= source[i].sex ===0?"他":"她" %>的日志</div> 
+            <div class="item view">与<%= source[i].sex ===0?"他":"她" %>聊天</div>            
         </div> 
 
     <% } %> 
