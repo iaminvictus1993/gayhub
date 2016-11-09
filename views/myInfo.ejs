@@ -54,9 +54,8 @@
 		</div>
 	</div>
 </form>
-	<img src="<%= logoPath.slice(20) %>"></img>  <!--需用相对路径，否者会有重复的域名-->
-	<div style="display:none1;" id="temp1"><%= currentUser.sex %></div>
-    <div style="display:none1;" id="temp2"><%= currentUser.sexFor %></div>
+	<div style="display:none;" id="temp1"><%= currentUser.sex %></div>
+    <div style="display:none;" id="temp2"><%= currentUser.sexFor %></div>
 	<script>
 		function setSelected() {
 			var a = document.getElementById("sex").children;

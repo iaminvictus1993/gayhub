@@ -4,12 +4,6 @@
     <title><%= title %></title>
 	<link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<style>
-		#logo{
-			vertical-align: middle;
-			width: 58px;
-			height: 40px;
-			float: left;
-		}
 		.nav{
 			display: inline;
 		}
@@ -24,6 +18,16 @@
             height: 130px;
             margin-top: 20px;
         }
+        .view{
+            border: solid 1px #ff4401;
+            padding: 3px;
+            display: inline;
+            color: #ff4401;
+            margin-right: 5%;
+        }
+        .item{
+            width:266px;
+        }
 	</style>
   </head>
   <body>
@@ -32,8 +36,7 @@
 		<li class="active"><a href="./home">大厅</a></li>
 		<li><a href="./myInfo">个人信息</a></li>
 		<li><a href="./logList">我的日志</a></li>
-		<li><a href="./exit">退出</a></li>
-		<img id='logo'src="/img/4.jpg" class="img-circle">		
+		<li><a href="./exit">退出</a></li>	
 		</ul>
 	</div>
 		
@@ -42,9 +45,9 @@
         <div id="container">
 
             <img class="logo" src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'></img>
-            <div>昵称：<%= source[i].name %></%=></div>
-            <div>年纪：<%= source[i].age %></div>
-            <div>性别：<% if(source[i].sex ===0 ) {
+            <div class="item">昵称：<%= source[i].name %></%=></div>
+            <div class="item">年纪：<%= source[i].age %></div>
+            <div class="item">性别：<% if(source[i].sex ===0 ) {
                             var a = "男";
                         }else if(source[i].sex === 1) {
                             var a = "女";
@@ -52,14 +55,17 @@
                             var a = "其它";
                         } %><%= a %></div>
                         
-            <div>取向：<% if(source[i].sexFor ===0 ) {
+            <div class="item">取向：<% if(source[i].sexFor ===0 ) {
                             var a = "男";
                         }else if(source[i].sexFor === 1) {
                             var a = "女";
                         }else {
                             var a = "通吃";
-                        } %><%= a %></div>            
-        </div>  
+                        } %><%= a %></div>   
+            <div class="item view" onclick='window.open("./viewLog?id=<%= source[i]._id %>", "_self")'>查看<%= source[i].sexFor ===0?"他":"她" %>的日志</div> 
+            <div class="item view">与<%= source[i].sexFor ===0?"他":"她" %>聊天</div>            
+        </div> 
+
     <% } %> 
 
   </body>

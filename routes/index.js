@@ -109,8 +109,6 @@ router.get('/logList', function(req, res, next) {
 			});		
 		});		
 	});
-
-
 });
 
 //渲染主页面
@@ -138,6 +136,52 @@ router.get('/home', function(req, res, next) {
 		});
 
 
+});
+
+//渲染查看他人日志页面
+router.get('/viewLog', function(req, res, next) {
+	if(!req.session.user) {
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		return;
+	}    
+	var currentPage = req.query.page;
+	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
+	var log = global.offerModel.getModel('log');
+	log.find({
+		userId: req.query.id
+	}).exec(function(err, totaldocs) {
+		if(err) {
+			res.send(err);
+			return;
+		}
+		if(!totaldocs || totaldocs.length === 0) {
+			res.send("<h1>暂未日志数据</h1><br/><a href='./home'>返回主页</a>");
+			return;
+		}
+		log.find({
+			userId: req.query.id
+		}).skip(skipNum).limit(8).exec(function(err, docs) {
+			if(err) {
+				res.send(err);
+				return;
+			}
+			if(!docs || docs.length === 0) {
+				res.send("<h1>暂未日志数据</h1><br/><a href='./home'>返回主页</a>");
+				return;
+			}
+			var newArr = [];
+			docs.forEach(function(item) {
+				item.title = decodeURIComponent(item.title);
+				item.content = decodeURIComponent(item.content);
+				newArr.push(item);
+			});
+			res.render('viewLog', {
+				title: '日志列表',
+				logSource: newArr,
+				totalSource: totaldocs
+			});		
+		});		
+	});
 });
 
 //渲染修改密码页面

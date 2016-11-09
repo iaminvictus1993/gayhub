@@ -36,7 +36,7 @@
     <div id="myLog">
 		<h1>日志列表</h1>
 		<%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
-			<a value="<%= i %>" href="./logList?page=<%= i %>"> <%= i %></a>
+			<a value="<%= i %>" href="./viewLog?page=<%= i %>"> <%= i %></a>
 		  <%}%>
 		<%logSource.forEach(function(item) { %>
 		<div id="hah" onclick="displayLog(event);">
@@ -46,7 +46,7 @@
 			<div class="cont">内容：<%= item.content %></div>
 		</div>
 		<% }); %>
-		<div style="color:yellow;font-size:40px;" onclick='window.open("./log","_self");return false;'>新建日志</div>
+		<div style="color:yellow;font-size:40px;" onclick='window.open("./home","_self");return false;'>返回主页</div>
 	</div>
     <div id="display">
         <input class="inputArea" type="text" placeholder="标题"  name="title" disabled/><br/><br/>
