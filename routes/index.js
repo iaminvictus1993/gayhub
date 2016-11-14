@@ -511,5 +511,16 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
         res.redirect("/home");
     });
 });
+//提供socket群聊
+// var app = require('express')();
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
 
+router.get("/chatTogether", function(req, res, next) {
+	if(!req.session.user) {
+		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		return;
+	}
+    res.render("socket", {userName: req.session.user.userName});
+});
 module.exports = router;
