@@ -74,20 +74,29 @@ router.get('/logList', function(req, res, next) {
 	var currentPage = req.query.page;
 	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
 	var log = global.offerModel.getModel('log');
-	log.find({
-		userId: req.session.user._id
-	}).exec(function(err, totaldocs) {
+    //增加模糊搜索，支持title content
+    var search = encodeURIComponent(req.query.search);//汉字，数据库中的值是经过编码处理的
+    var condition = {};
+    condition.$and = [];
+    condition.$and.push({userId: req.session.user._id});
+    if(search) {
+        var orcond = [];
+        orcond.push({"title": {$regex: search}});
+        orcond.push({"content": {$regex: search}});
+        condition.$and.push({$or: orcond});
+    }else{
+        condition = {userId: req.session.user._id};
+    }
+	log.find(condition).exec(function(err, totaldocs) {
 		if(err) {
 			res.send(err);
 			return;
 		}
 		if(!totaldocs || totaldocs.length === 0) {
-			res.send("<h1>暂未日志数据</h1><br/><a href='./log'>前往发表日志</a>");
+			res.send("<h1>暂未日志数据1</h1><br/><a href='./log'>前往发表日志</a>");
 			return;
 		}
-		log.find({
-			userId: req.session.user._id
-		}).skip(skipNum).limit(8).exec(function(err, docs) {
+		log.find(condition).skip(skipNum).limit(8).exec(function(err, docs) {
 			if(err) {
 				res.send(err);
 				return;
