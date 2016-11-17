@@ -90,6 +90,15 @@ router.get('/logList', function(req, res, next) {
 			res.send(err);
 			return;
 		}
+        //若没有搜索数据，则返回空数据页面
+        if(search && (!totaldocs || totaldocs.length === 0)) {
+			res.render('logList', {
+				title: '日志列表',
+				logSource: [],
+				totalSource: []
+			});	
+            return;
+        }
 		if(!totaldocs || totaldocs.length === 0) {
 			res.send("<h1>暂未日志数据1</h1><br/><a href='./log'>前往发表日志</a>");
 			return;
@@ -518,16 +527,13 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
         res.redirect("/home");
     });
 });
-//提供socket群聊
-// var app = require('express')();
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
 
+//提供socket群聊
 router.get("/chatTogether", function(req, res, next) {
 	if(!req.session.user) {
 		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
 		return;
 	}
-    res.render("socket", {userName: req.session.user.userName});
+    res.render("socket", {name: req.session.user.name});
 });
 module.exports = router;

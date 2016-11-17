@@ -3,7 +3,7 @@
   <head>
     <title>Socket.IO chat</title>
     <script src="../socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="javascripts/jquery-3.1.1.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -23,13 +23,13 @@
     <script>
       var socket = io();
       $('form').submit(function(){
-        socket.emit('chat message', {msg: $('#m').val(), userName: <%= userName %>});
+        socket.emit('chat message', {msg: $('#m').val(), name: '<%= name %>'});
         $('#m').val('');
         return false;
       });
-      socket.on('chat message', function(obj){
-        console.log(obj);
-        $('#messages').append($('<li>').text(`用户${obj.userName}说: ${obj.msg}`));
+      socket.on('message', function(obj){
+        //es6模板字符串语法
+        $('#messages').append($('<li>').text(`${obj.name}: ${obj.msg}`));
       });
     </script>
   </body>

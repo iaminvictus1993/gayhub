@@ -31,7 +31,7 @@ module.exports = {
         sex: Number,  //0男 1女 2其它
         sexFor: Number, //0男 1女 2通吃
         logoPath: String,
-		createAt: {type: Date, default: Date.now()}
+		createAt: {type: Date, default: Date.now(), index: true}
     },
     log:{
         userId: {type: Schema.Types.ObjectId, ref: 'user'},
