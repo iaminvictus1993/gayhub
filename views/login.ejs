@@ -24,6 +24,16 @@
             width:62px;
             border-radius:6%;
         }
+        #transitionBig{
+            width: 250px;
+            height:45px;
+            transition: width 2s;
+        }
+        #transitionSmall{
+            width: 182px;
+            height:30px;
+            transition: width 2s;
+        }
     </style>
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
@@ -31,13 +41,23 @@
     <h1 id="header"><%= title %></h1>
     <h1 style="color:red;"><%= error %></h1>
     <form action="./login" method="post" class="container1">
-        <input class="inputArea" type="text" placeholder="请输入账号"  name="userName"/>&nbsp&nbsp&nbsp
-        <input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" name="passWord"/>&nbsp
+        <input class="inputArea" type="text" placeholder="请输入账号"  onblur="addId(this);" onfocus="addId(this);" name="userName"/>&nbsp&nbsp&nbsp
+        <input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" onblur="addId(this);" onfocus="addId(this);" name="passWord"/>&nbsp
         <input class="login" type="submit" value="登录" />
 		<input class="login" type="submit" value="注册" onclick='window.open("./register", "_self");return false;' />
 		<input class="login" type="submit" value="忘记密码" onclick='window.open("./changePassword", "_self");return false;' />
 		<br/> 
     </form>
     </div>
+    <script>
+        function addId(a) {
+            if(a.id != "transitionBig"){
+                a.id = "transitionBig";
+            }else{
+                a.id = "transitionSmall";
+            }
+            console.log(a.id);
+        }
+    </script>
   </body>
 </html>

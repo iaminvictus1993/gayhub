@@ -10,7 +10,7 @@ router.get('/plus', function(req, res, next) {
     delete req.session.count;
 	res.end();
 });
-/* GET home page. */
+
 router.get('/', function(req, res, next) {
     res.render('login', {title: 'Hello! Gay Hub'});
 });
@@ -79,13 +79,11 @@ router.get('/logList', function(req, res, next) {
     var condition = {};
     condition.$and = [];
     condition.$and.push({userId: req.session.user._id});
-    if(search) {
+    if((search != "undefined") && (search != "")) {
         var orcond = [];
         orcond.push({"title": {$regex: search}});
         orcond.push({"content": {$regex: search}});
         condition.$and.push({$or: orcond});
-    }else{
-        condition = {userId: req.session.user._id};
     }
 	log.find(condition).exec(function(err, totaldocs) {
 		if(err) {
