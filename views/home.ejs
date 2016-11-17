@@ -28,6 +28,37 @@
         .item{
             width:266px;
         }
+        #mask{
+            background: #000;
+            opacity: 0.75;
+            filter: alpha(opacity=75);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+        #login{
+            position: fixed;
+            left: 30%;
+            top: 30%;
+            z-index: 1002;
+        }
+        .loginCon{
+            width:670px;
+            height:380px;
+            background: url(img/1.jpg) no-repeat;
+            position: relative;
+        }
+        #close{
+            width: 30px;
+            height: 30px;
+            background: url(img/2.jpg) no-repeat;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            cursor: pointer;
+
+        }
 	</style>
   </head>
   <body>
@@ -37,11 +68,17 @@
 		<li><a href="./myInfo">个人信息</a></li>
 		<li><a href="./logList">我的日志</a></li>
 		<li><a href="./chatTogether">群聊</a></li>
-		<li><a href="./exit">退出</a></li>	
+		<li id="btnLogin"><a href="#"><%= name %></a></li>
+		<li><a href="./exit">退出</a></li>
 		</ul>
-	</div>
-		
-		
+	<!--</div>
+	<div id="mask">
+    </div>
+	 <div id="login">
+        <div class="loginCon">
+            <div id="close"></div>
+        </div>
+    </div> -->
 	<% for(var i=0; i<source.length; i++) { %>  
         <div id="container">
 
@@ -68,6 +105,46 @@
         </div> 
 
     <% } %> 
-
+    <script>
+        function openNew(){
+            //获取页面高度跨度
+            var sHeight = document.documentElement.scrollHeight;
+            var sWidth = document.documentElement.scrollWidth;
+            //可视区域的高度和宽度
+            var wHeight = document.documentElement.clientHeight;
+            var wWidth = document.documentElement.clientwidth;//一般与页面相等
+            
+            var oMask = document.createElement("div");
+            oMask.id = "mask";
+            oMask.style.height = sHeight + "px";
+            oMask.style.width = sWidth + "px";
+            document.body.appendChild(oMask);
+            var oLogin = document.createElement("div");
+            oLogin.id = "login";
+            document.body.appendChild(oLogin); 
+            oLogin.innerHTML = '<div class="loginCon"><form action="./login" method="post" class="container1">'+
+            '<input class="inputArea" type="text" placeholder="请输入账号"  onblur="addId(this);" onfocus="addId(this);" name="userName"/>&nbsp&nbsp&nbsp'+
+            '<input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" onblur="addId(this);" onfocus="addId(this);" name="passWord"/>&nbsp'+
+            '<input class="login" type="submit" value="登录" />'+
+            //'<input class="login" type="submit" value="注册" onclick='window.open("./register", "_self");return false;' />'+
+            //'<input class="login" type="submit" value="忘记密码" onclick='window.open("./changePassword", "_self");return false;' />'+
+            '<br/> '+
+            '</form><div id="close"></div></div>';
+            //获取login的宽度和高度
+            var dHeight = oLogin.offsetHeight;
+            var dWidth = oLogin.offsetWidth;
+            oLogin.style.left = (sWidth-dWidth)/2 + "px";
+            oLogin.style.top = (wHeight-dHeight)/2 + "px";
+            var oClose = document.getElementById("close");
+            oMask.onclick=oClose.onclick = function() {
+                document.body.removeChild(oMask);
+                document.body.removeChild(oLogin);
+            }
+        };
+        window.onload = function() {
+            var oBtn = document.getElementById("btnLogin");
+                oBtn.onclick = openNew;
+        }
+    </script>
   </body>
 </html>

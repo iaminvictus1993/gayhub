@@ -129,10 +129,10 @@ router.get('/logList', function(req, res, next) {
 
 //渲染主页面
 router.get('/home', function(req, res, next) {
-	if(!req.session.user) {
-		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
-		return;
-	}
+	// if(!req.session.user) {
+		// res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		// return;
+	// }
 	var user = global.offerModel.getModel('user');
 	//找出新注册用户（必须有头像），前三位
 	user.find({"logoPath": {$exists: true}})
@@ -147,8 +147,9 @@ router.get('/home', function(req, res, next) {
                 res.render('home', {title: '主页面', source:docs});
                 return;
 			}
+            var sessionName = req.session.user?req.session.user.name:'请登录';
 			// return res.send(decodeURIComponent(docs[0].logoPath).slice(20));
-			res.render('home', {title: '主页面', source:docs});
+			res.render('home', {title: '主页面', source:docs, name: sessionName});
 		});
 
 
