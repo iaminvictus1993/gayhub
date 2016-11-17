@@ -147,8 +147,7 @@ router.get('/home', function(req, res, next) {
                 res.render('home', {title: '主页面', source:docs});
                 return;
 			}
-            var sessionName = req.session.user?req.session.user.name:'请登录';
-			// return res.send(decodeURIComponent(docs[0].logoPath).slice(20));
+            var sessionName = req.session.user?'切换账号':'请登录';
 			res.render('home', {title: '主页面', source:docs, name: sessionName});
 		});
 
@@ -235,7 +234,7 @@ router.get('/myInfo', function(req, res, next) {
 //退出，清楚用户session
 router.get('/exit', function(req, res, next) {
 	delete req.session.user;
-	res.send(req.session);
+	res.redirect('/login');
 });
 
 //注册账号功能

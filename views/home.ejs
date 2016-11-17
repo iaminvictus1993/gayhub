@@ -46,19 +46,32 @@
         .loginCon{
             width:670px;
             height:380px;
-            background: url(img/1.jpg) no-repeat;
+            background: url(img/9.jpg) no-repeat;
             position: relative;
         }
         #close{
             width: 30px;
             height: 30px;
-            background: url(img/2.jpg) no-repeat;
+            background: url(img/close.jpg) no-repeat;
             position: absolute;
             right: 5px;
             top: 5px;
             cursor: pointer;
 
         }
+		#ad{
+			position: relative;
+			bottom: 0px;
+			height:200px;
+			background: yellow;
+			text-align: center;
+			line-height: 200px;
+			color: red;
+			font-size: 50px;
+		}
+		.container1{
+			absolute
+		}
 	</style>
   </head>
   <body>
@@ -103,47 +116,60 @@
             <div class="item view" onclick='window.open("./viewLog?id=<%= source[i]._id %>", "_self")'>查看<%= source[i].sex ===0?"他":"她" %>的日志</div> 
             <div class="item view">与<%= source[i].sex ===0?"他":"她" %>聊天</div>            
         </div> 
-
     <% } %> 
+	<div id="ad">广告位招商</div>
     <script>
         function openNew(){
-            //获取页面高度跨度
+            //获取页面高度宽度
             var sHeight = document.documentElement.scrollHeight;
             var sWidth = document.documentElement.scrollWidth;
             //可视区域的高度和宽度
             var wHeight = document.documentElement.clientHeight;
-            var wWidth = document.documentElement.clientwidth;//一般与页面相等
+            var wWidth = document.documentElement.clientWidth;//一般与页面相等
             
             var oMask = document.createElement("div");
-            oMask.id = "mask";
-            oMask.style.height = sHeight + "px";
-            oMask.style.width = sWidth + "px";
-            document.body.appendChild(oMask);
+				oMask.id = "mask";
+				oMask.style.height = sHeight + "px";
+				oMask.style.width = sWidth + "px";
+				document.body.appendChild(oMask);
             var oLogin = document.createElement("div");
-            oLogin.id = "login";
-            document.body.appendChild(oLogin); 
-            oLogin.innerHTML = '<div class="loginCon"><form action="./login" method="post" class="container1">'+
-            '<input class="inputArea" type="text" placeholder="请输入账号"  onblur="addId(this);" onfocus="addId(this);" name="userName"/>&nbsp&nbsp&nbsp'+
-            '<input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" onblur="addId(this);" onfocus="addId(this);" name="passWord"/>&nbsp'+
-            '<input class="login" type="submit" value="登录" />'+
-            //'<input class="login" type="submit" value="注册" onclick='window.open("./register", "_self");return false;' />'+
-            //'<input class="login" type="submit" value="忘记密码" onclick='window.open("./changePassword", "_self");return false;' />'+
-            '<br/> '+
-            '</form><div id="close"></div></div>';
+				oLogin.id = "login";
+				document.body.appendChild(oLogin); 
+				oLogin.innerHTML = '<div class="loginCon"><form action="./login" method="post" class="container1">'+
+				'<input class="inputArea" type="text" placeholder="请输入账号"   name="userName"/>&nbsp&nbsp&nbsp'+
+				'<input class="inputArea" type="password" placeholder="请输入密码"  name="passWord"/>&nbsp'+
+				'<input class="login" type="submit" value="登录" />'+
+				'<input class="login" id="register" type="submit" value="注册" />'+
+				'<input class="login" id="changePassword" type="submit" value="忘记密码" />'+
+				'<br/> '+
+				'</form><div id="close"></div></div>';
             //获取login的宽度和高度
             var dHeight = oLogin.offsetHeight;
             var dWidth = oLogin.offsetWidth;
-            oLogin.style.left = (sWidth-dWidth)/2 + "px";
-            oLogin.style.top = (wHeight-dHeight)/2 + "px";
+				oLogin.style.left = (wWidth-dWidth)/2 + "px";
+				oLogin.style.top = (wHeight-dHeight)/2 + "px";
             var oClose = document.getElementById("close");
-            oMask.onclick=oClose.onclick = function() {
-                document.body.removeChild(oMask);
-                document.body.removeChild(oLogin);
-            }
+				oMask.onclick=oClose.onclick = function() {
+					document.body.removeChild(oMask);
+					document.body.removeChild(oLogin);
+				}
+			//给注册或则修改密码添加点击事件
+			var reg = document.getElementById("register");
+			var cpd = document.getElementById("changePassword");
+			reg.onclick = function(event){
+				event.preventDefault();
+				event.stopPropagation();
+				window.open("./register", "_self");return false;
+			}
+			cpd.onclick = function(event){
+				event.preventDefault();
+				event.stopPropagation();
+				window.open("./changePassword", "_self");return false;
+			}	
         };
         window.onload = function() {
             var oBtn = document.getElementById("btnLogin");
-                oBtn.onclick = openNew;
+                oBtn.onclick = openNew;			
         }
     </script>
   </body>
