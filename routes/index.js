@@ -68,7 +68,7 @@ router.get('/log', function(req, res, next) {
 //渲染日志列表页面
 router.get('/logList', function(req, res, next) {
 	if(!req.session.user) {
-		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
 		return;
 	}    
 	var currentPage = req.query.page;
@@ -157,7 +157,7 @@ router.get('/home', function(req, res, next) {
 //渲染查看他人日志页面
 router.get('/viewLog', function(req, res, next) {
 	if(!req.session.user) {
-		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
+		res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
 		return;
 	}    
 	try{
