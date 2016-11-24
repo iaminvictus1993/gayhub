@@ -27,6 +27,9 @@
             height:380px;
         }
     </style>
+    <script type="text/javascript" src="javascripts/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor.min.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor_lang/zh-cn.js"></script>
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
         <div style="right:0;position:absolute;"><a href="./home"><img style="width:40px;height:40px;" src="img/home.png" alt="返回主页" /></a></div>
@@ -36,7 +39,7 @@
     <p style="color:red;"><%= info %></p>
     <form action="./publishLog" method="post" class="container1">
         <input class="inputArea" type="text" placeholder="标题"  name="title"/><br/><br/>
-        <textarea class="inputArea textarea" placeholder="正文" name="content"></textarea><br/><br/>
+        <textarea class="inputArea textarea xheditor" placeholder="正文" name="content"></textarea><br/><br/>
         <input class="login" type="submit" value="发布" />
 		<input class="login" type="submit" value="重置全部" onclick='clearContent(event);return false;' />
 		<input id="displayInfo" class="login" type="submit" value="显示我的日志" onclick='window.open("./logList?page=1","_self");return false;' />

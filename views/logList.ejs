@@ -70,6 +70,9 @@
             border-radius: 5px;
         }
     </style>
+    <script type="text/javascript" src="javascripts/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor.min.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor_lang/zh-cn.js"></script>
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
         <div style="right:0;position:absolute;"><a href="./home"><img style="width:40px;height:40px;" src="img/home.png" alt="返回主页" /></a></div>
@@ -94,7 +97,7 @@
 	</div>
     <div id="display">
         <input class="inputArea" type="text" placeholder="标题"  name="title" disabled/><br/><br/>
-        <textarea class="inputArea textarea" placeholder="正文" name="content" disabled></textarea><br/><br/>
+        <textarea id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled></textarea><br/><br/>
     </div>
     <script>
         function displayLog(event) {
@@ -102,6 +105,7 @@
             displayNode.style.display = "block";
             displayNode.childNodes[1].value = event.target.parentNode.childNodes[1].innerText;
             displayNode.childNodes[5].value = event.target.parentNode.childNodes[7].innerText;
+            insert();
         }
         function enterInput(event) {
             //event.preventDefault(); 若阻止该默认事件，input不能输入值
@@ -117,6 +121,13 @@
                 window.open("./logList?search="+searchValue,"_self");
             }
         }
+        //textarea中显示html代码
+        function insert(){  
+            var displayNode = document.getElementById("display");
+            //var oDiv=document.createElement("DIV");  
+            displayNode.childNodes[5].innerHTML="<br><Font color = Red>red<BR></FONT><Font color = Blue>blue</font>";  
+            //document.getElementById("txt").value = oDiv.innerHTML;   
+        }  
         window.onload = function() {
             var newLogNode = document.getElementById("newLog");
             setInterval(function(){
@@ -134,7 +145,7 @@
                 var searchValue = document.getElementById("input").value;
                 window.open("./logList?search="+searchValue,"_self");
             };
-        }
+        };
     </script>
   </body>
 </html>
