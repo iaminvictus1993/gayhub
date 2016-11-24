@@ -38,6 +38,7 @@
             text-align: left;
             text-indent:28px;
             height:380px;
+			overflow: scroll;
         }
         a{
             text-decoration: none;
@@ -97,14 +98,14 @@
 	</div>
     <div id="display">
         <input class="inputArea" type="text" placeholder="标题"  name="title" disabled/><br/><br/>
-        <textarea id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled></textarea><br/><br/>
+        <div id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled></div><br/><br/>
     </div>
     <script>
         function displayLog(event) {
             var displayNode = document.getElementById("display");
             displayNode.style.display = "block";
             displayNode.childNodes[1].value = event.target.parentNode.childNodes[1].innerText;
-            displayNode.childNodes[5].value = event.target.parentNode.childNodes[7].innerText;
+            displayNode.childNodes[5].innerHTML = event.target.parentNode.childNodes[7].innerText;
             insert();
         }
         function enterInput(event) {
@@ -120,14 +121,7 @@
                 var searchValue = document.getElementById("input").value;
                 window.open("./logList?search="+searchValue,"_self");
             }
-        }
-        //textarea中显示html代码
-        function insert(){  
-            var displayNode = document.getElementById("display");
-            //var oDiv=document.createElement("DIV");  
-            displayNode.childNodes[5].innerHTML="<br><Font color = Red>red<BR></FONT><Font color = Blue>blue</font>";  
-            //document.getElementById("txt").value = oDiv.innerHTML;   
-        }  
+        } 
         window.onload = function() {
             var newLogNode = document.getElementById("newLog");
             setInterval(function(){

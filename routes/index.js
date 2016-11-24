@@ -124,7 +124,7 @@ router.get('/logList', function(req, res, next) {
 			res.send("<h1>暂未日志数据1</h1><br/><a href='./log'>前往发表日志</a>");
 			return;
 		}
-		log.find(condition).skip(skipNum).limit(8).exec(function(err, docs) {
+		log.find(condition).skip(skipNum).limit(8).sort("-time").exec(function(err, docs) {
 			if(err) {
 				res.send(err);
 				return;
@@ -202,7 +202,7 @@ router.get('/viewLog', function(req, res, next) {
 		}
 		log.find({
 			userId: req.query.id
-		}).skip(skipNum).limit(8).exec(function(err, docs) {
+		}).skip(skipNum).limit(8).sort("-time").exec(function(err, docs) {
 			if(err) {
 				res.send(err);
 				return;

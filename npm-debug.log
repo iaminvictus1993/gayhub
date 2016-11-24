@@ -2,21 +2,21 @@
 1 verbose cli [ 'D:\\nodejs\\node.exe',
 1 verbose cli   'D:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'start' ]
-2 info using npm@3.10.8
-3 info using node@v7.0.0
+2 info using npm@3.10.3
+3 info using node@v6.6.0
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle gayhub@0.0.0~prestart: gayhub@0.0.0
 6 silly lifecycle gayhub@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle gayhub@0.0.0~start: gayhub@0.0.0
 8 verbose lifecycle gayhub@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle gayhub@0.0.0~start: PATH: D:\nodejs\node_modules\npm\bin\node-gyp-bin;D:\gayhub\node_modules\.bin;C:\Users\Administrator\bin;F:\Git\mingw64\bin;F:\Git\usr\local\bin;F:\Git\usr\bin;F:\Git\usr\bin;F:\Git\mingw64\bin;F:\Git\usr\bin;C:\Users\Administrator\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0;D:\nodejs;F:\Git\cmd;E:\Notepad++\notepad++.exe;F:\redis\redis-server.exe;F:\mongodb\mongodb\bin;C:\Users\Administrator\AppData\Roaming\npm;F:\redis\redis-server.exe;F:\Git\usr\bin\vendor_perl;F:\Git\usr\bin\core_perl
+9 verbose lifecycle gayhub@0.0.0~start: PATH: D:\nodejs\node_modules\npm\bin\node-gyp-bin;D:\gayhub\node_modules\.bin;D:\nodejs;C:\Users\Administrator\bin;E:\software\Git\mingw64\bin;E:\software\Git\usr\local\bin;E:\software\Git\usr\bin;E:\software\Git\usr\bin;E:\software\Git\mingw64\bin;E:\software\Git\usr\bin;C:\Users\Administrator\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0;D:\nodejs;D:\MongoDB\bin\mongod.exe;E:\software\Git\cmd;C:\Program Files (x86)\QuickTime\QTSystem;D:\MongoDB\bin;C:\Users\Administrator\AppData\Roaming\npm;E:\software\Git\usr\bin\vendor_perl;E:\software\Git\usr\bin\core_perl
 10 verbose lifecycle gayhub@0.0.0~start: CWD: D:\gayhub
 11 silly lifecycle gayhub@0.0.0~start: Args: [ '/d /s /c', 'pm2 start app --watch' ]
 12 silly lifecycle gayhub@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle gayhub@0.0.0~start: Failed to exec start script
 14 verbose stack Error: gayhub@0.0.0 start: `pm2 start app --watch`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (D:\nodejs\node_modules\npm\lib\utils\lifecycle.js:255:16)
+14 verbose stack     at EventEmitter.<anonymous> (D:\nodejs\node_modules\npm\lib\utils\lifecycle.js:242:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
 14 verbose stack     at ChildProcess.<anonymous> (D:\nodejs\node_modules\npm\lib\utils\spawn.js:40:14)
@@ -28,8 +28,8 @@
 16 verbose cwd D:\gayhub
 17 error Windows_NT 6.1.7601
 18 error argv "D:\\nodejs\\node.exe" "D:\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "start"
-19 error node v7.0.0
-20 error npm  v3.10.8
+19 error node v6.6.0
+20 error npm  v3.10.3
 21 error code ELIFECYCLE
 22 error gayhub@0.0.0 start: `pm2 start app --watch`
 22 error Exit status 1

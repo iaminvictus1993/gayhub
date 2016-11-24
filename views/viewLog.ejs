@@ -29,6 +29,7 @@
         }
         .textarea{
             height:380px;
+			overflow:scroll;
         }
     </style>
   </head>
@@ -51,14 +52,14 @@
 	</div>
     <div id="display">
         <input class="inputArea" type="text" placeholder="标题"  name="title" disabled/><br/><br/>
-        <textarea class="inputArea textarea" placeholder="正文" name="content" disabled></textarea><br/><br/>
+		<div id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled></div><br/><br/>
     </div>
     <script>
         function displayLog(event) {
             var displayNode = document.getElementById("display");
             displayNode.style.display = "block";
             displayNode.childNodes[1].value = event.target.parentNode.childNodes[1].innerText;
-            displayNode.childNodes[5].value = event.target.parentNode.childNodes[7].innerText;
+            displayNode.childNodes[5].innerHTML = event.target.parentNode.childNodes[7].innerText;
             console.log(event.target.parentNode.childNodes);
         }
     </script>
