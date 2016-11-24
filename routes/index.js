@@ -2,6 +2,26 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 
+router.get('/agg', function(req, res, next) {
+    var log = global.offerModel.getModel('log');
+    var aggregate = log.aggregate();
+    if(req.query.limit) {
+        aggregate.limit(req.query.limit);
+    }
+    aggregate.match({}).group({
+        _id: "$userId",
+        logsCount: {
+            $sum: 1
+        }
+    }).project({
+        _id: 1, //
+        userId: "$logsCount", //分组条件，须设值为“_id”
+        logsCount: 1
+    }).then(function(data) {
+        res.send(data);        
+    });
+});
+
 router.get('/getSession', function(req, res, next) {
 	res.send(req.session);
 });
@@ -68,11 +88,12 @@ router.get('/log', function(req, res, next) {
 //渲染日志列表页面
 router.get('/logList', function(req, res, next) {
 	if(!req.session.user) {
-		res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
+		// res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
+        res.render('autoBack');
 		return;
 	}    
 	var currentPage = req.query.page;
-	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0
+	var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0;
 	var log = global.offerModel.getModel('log');
     //增加模糊搜索，支持title content
     var search = encodeURIComponent(req.query.search);//汉字，数据库中的值是经过编码处理的

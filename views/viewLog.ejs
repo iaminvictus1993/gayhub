@@ -34,6 +34,7 @@
   </head>
   <body style="background-image:url(./img/9.jpg);display:flex;">
     <div id="myLog">
+        <div style="right:0;position:absolute;"><a href="./home"><img style="width:40px;height:40px;" src="img/home.png" alt="返回主页" /></a></div>
 		<h1>日志列表</h1>
 		<%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
 			<a value="<%= i %>" href=<%= originalUrl+"&page="+ i %> > <%= i %></a>

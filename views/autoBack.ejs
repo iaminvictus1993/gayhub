@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meat charset = "utf-8" />
+</head>
+<body>
+    <h1>用户未登录</h1><br/>
+    <a href='./home'>立刻前往登录</a><br/><br/>
+    <div id="auto"><dib>
+    <script>
+        var node = document.getElementById("auto");
+        var num = 5;
+        f();
+        function f(){
+            node.innerHTML = `将在${num}后自动跳转至主界面`;
+            if(num === 0) {
+                window.open('./home', '_self');
+            }else{
+                num--;
+                setTimeout(f, 1000);
+            }
+        }
+    </script>
+</body>
+</html>

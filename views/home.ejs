@@ -2,10 +2,12 @@
 <html>
   <head>
     <title><%= title %></title>
-	<link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="stylesheets/bootstrap.css" rel="stylesheet">
 	<link href="stylesheets/home.css" rel="stylesheet">
   </head>
   <body>
+    <iframe width="500" scrolling="no" height="15" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=11&icon=5"></iframe>
+
 	<div id='nav'>
 		<ul class="nav nav-pills">
 		<li class="active"><a href="./home">大厅</a></li>
@@ -15,7 +17,8 @@
 		<li id="btnLogin"><a href="#"><%= name %></a></li>
 		<li><a href="./exit">退出</a></li>
 		</ul>
-	<!--</div>
+    </div>
+    <!--
 	<div id="mask">
     </div>
 	 <div id="login">
@@ -40,8 +43,9 @@
             <span index="4"></span>
             <span index="5"></span>
         </div>
-        <a href="javascript:;" id="prev" class="arrow">&lt;</a>
+        <a href="javascript:void(0);" id="prev" class="arrow">&lt;</a>
         <a href="javascript:;" id="next" class="arrow">&gt;</a>
+        <!-- href="javascript:....." 阻止<a>浏览器默认行为,页面内容较多时，有滚动条时，点击不会出现内容乱跳-->
     </div>
 	
 	<% for(var i=0; i<source.length; i++) { %>  
