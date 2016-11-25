@@ -151,4 +151,6 @@ window.onload = function() {
     //把mainCon动态居中
     var mOffset = mainCon.offsetWidth;
     mainCon.style.left = (document.documentElement.clientWidth - mOffset)/2 + 'px';
+    //
+    mainCon.style.opacity = "1";
 }

@@ -73,6 +73,8 @@
     border: 3px solid #333;
     overflow: hidden;
     position: relative;
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 #list{
     width: 4200px;

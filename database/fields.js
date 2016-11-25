@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var pbkdf2 = require('../pbkdf2');
 //var ObjectId = Schema.types.ObjectId;
 module.exports = {
+    //用户字段
     user:{
         logId:{type: Schema.Types.ObjectId, ref: 'log'},
         userName: {
@@ -33,6 +34,7 @@ module.exports = {
         logoPath: String,
 		createAt: {type: Date, default: Date.now(), index: true}
     },
+    //日志字段
     log:{
         userId: {type: Schema.Types.ObjectId, ref: 'user'},
         title: String,   //标题
@@ -42,5 +44,12 @@ module.exports = {
         time: Date,
         praise: {type: Number, default: 0},  //点赞数量
         collect: {type: Number, default: 0} //收藏数量
+    },
+    //评论字段
+    comment: {
+        userId: {type: Schema.Types.ObjectId, ref: 'user'},
+        logId: {type: Schema.Types.ObjectId, ref: 'log'},
+        content: String,
+		createAt: {type: Date, default: Date.now(), index: true}
     }
 };
