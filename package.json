@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start app --watch",
-    "stop": "pm2 stop app --watch"
+    "start": "pm2 start app.js --watch",
+    "stop": "pm2 stop app.js --watch"
   },
   "dependencies": {
     "body-parser": "~1.15.1",
@@ -21,6 +21,7 @@
     "morgan": "~1.7.0",
     "multer": "^1.2.0",
     "nodemailer": "^2.6.4",
+    "pm2": "^2.1.5",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.5.1",
     "winston": "^0.8.3"
