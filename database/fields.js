@@ -42,6 +42,7 @@ module.exports = {
         content: String,
         picture: String,
         time: Date,
+        praisedPerson: [{person: String}],
         praise: {type: Number, default: 0},  //点赞数量
         collect: {type: Number, default: 0} //收藏数量
     },
@@ -50,6 +51,8 @@ module.exports = {
         userId: {type: Schema.Types.ObjectId, ref: 'user'},
         logId: {type: Schema.Types.ObjectId, ref: 'log'},
         content: String,
-		createAt: {type: Date, default: Date.now(), index: true}
+		createAt: {type: Date, default: Date.now(), index: true},
+        praise: {type: Number, default: 0},  //顶数量
+        depraise: {type: Number, default: 0}  //踩数量
     }
 };

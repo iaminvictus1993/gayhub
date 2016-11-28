@@ -189,6 +189,7 @@ router.get('/viewLog', function(req, res, next) {
 				console.log(err);
 	}
 	var log = global.offerModel.getModel('log');
+    //获取总日志数
 	log.find({
 		userId: req.query.id
 	}).exec(function(err, totaldocs) {
@@ -200,6 +201,7 @@ router.get('/viewLog', function(req, res, next) {
 			res.send("<h1>暂未日志数据</h1><br/><a href='./home'>返回主页</a>");
 			return;
 		}
+        //实现分页操作
 		log.find({
 			userId: req.query.id
 		}).skip(skipNum).limit(8).sort("-time").exec(function(err, docs) {
@@ -556,5 +558,72 @@ router.get("/chatTogether", function(req, res, next) {
 		return;
 	}
     res.render("socket", {name: req.session.user.name});
+});
+
+//发表评论
+router.post("/sendComment", function(req, res, next) {
+    var content = req.body.comment;
+    var logId = req.body.logId;
+    var comment = global.offerModel.getModel("comment");
+    comment.create({
+        userId: req.session.user._id,
+        logId: logId,
+        content: content
+    }, function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.json({msg: 'no data'});
+            return;
+        }
+        req.flash("info", "评论成功");
+        res.redirect(req.body.href);
+        // res.send(data);
+    });
+});
+
+//获取评论数据（暂不实现评论分页功能）
+router.get("/showComment", function(req, res, next) {
+    var logId = req.query.logId;
+    var comment = global.offerModel.getModel("comment");
+    comment.find({
+        logId: logId
+    })
+    .sort("-createAt")
+    .limit(3)
+    .populate("userId", "name logoPath age sex")
+    .exec(function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.json({msg: 'no data'});
+            return;
+        }
+        res.send(data);
+    });
+});
+
+//日志顶踩功能，并向praisedPerson插入数据
+router.get("/updownPraise",function(req, res, next) {
+    var increase = req.query.increase;
+    var logId = req.query.logId
+    // return res.send(logId);
+    //
+    var log = global.offerModel.getModel("log");
+    log.findByIdAndUpdate(logId, increase === "true"?{"$inc":{"praise": 1}, "$addToSet":{praisedPerson:{person:req.session.user.name}}}:{"$inc":{"praise": -1}},{new:true, upsert: true}, function(err, data) {
+        if(err) {
+            res.send(err);
+            return;
+        }
+        if(!data) {
+            res.send("no data");
+            return;
+        }
+        res.send(data);
+    });
 });
 module.exports = router;
