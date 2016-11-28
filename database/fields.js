@@ -42,7 +42,7 @@ module.exports = {
         content: String,
         picture: String,
         time: Date,
-        praisedPerson: [{person: String}],
+        praisedPerson: [{person: String,_id:{type: Number,default: 1}}],
         praise: {type: Number, default: 0},  //点赞数量
         collect: {type: Number, default: 0} //收藏数量
     },

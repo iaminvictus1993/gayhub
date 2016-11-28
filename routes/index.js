@@ -219,11 +219,28 @@ router.get('/viewLog', function(req, res, next) {
 				item.content = decodeURIComponent(item.content);
 				newArr.push(item);
 			});
+			var praiseArr = [];
+			newArr.forEach(function(i){
+				praiseArr.push(i.praisedPerson);
+			});
+			var temArr = praiseArr.join('|').split('|');
+			var arr;
+// return res.send(temArr);
+			if(temArr && temArr.length != 0){
+				arr = temArr.map(function(temArr) {return JSON.parse(JSON.stringify(temArr));});
+			}else{
+				arr = [{person: {}}];
+			}
+		// return res.send( arr[1]);
+			// return res.send(newArr.map(function(i){return i.praisedPerson});
 			res.render('viewLog', {
 				title: '日志列表',
 				logSource: newArr,
 				totalSource: totaldocs,
-				originalUrl: "."+req.originalUrl.slice(0,36)
+				originalUrl: "."+req.originalUrl.slice(0,36),
+				sessionName: req.session.user.name,
+				//json无效，所以不得已用eval
+				praisedPersonArr: arr
 			});		
 		});		
 	});
@@ -614,7 +631,7 @@ router.get("/updownPraise",function(req, res, next) {
     // return res.send(logId);
     //
     var log = global.offerModel.getModel("log");
-    log.findByIdAndUpdate(logId, increase === "true"?{"$inc":{"praise": 1}, "$addToSet":{praisedPerson:{person:req.session.user.name}}}:{"$inc":{"praise": -1}},{new:true, upsert: true}, function(err, data) {
+    log.findByIdAndUpdate(logId, increase === "true"?{"$inc":{"praise": 1}, "$addToSet":{praisedPerson:{person:req.session.user.name}}}:{"$inc":{"praise": -1},"$pull":{praisedPerson:{person:req.session.user.name}}},{new:true, upsert: true}, function(err, data) {
         if(err) {
             res.send(err);
             return;

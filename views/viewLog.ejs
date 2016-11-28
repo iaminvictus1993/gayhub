@@ -65,7 +65,7 @@
 		<%logSource.forEach(function(item, i) { %>
         <div id="container">
             <div class="feed" id="feed<%= i+1 %>" >
-            <div class="heart " id="like<%= i+1 %>" rel="like" ></div> <div class="likeCount" id="likeCount<%= i+1 %>"><%= item.praise %></div>
+            <div class="heart" style="background-position:<%=  praisedPersonArr[i].indexOf(sessionName) != -1?-2200:0 %>px" id="like<%= i+1 %>" rel="<%=  praisedPersonArr[i].indexOf(sessionName) != -1?'unlike':'like' %>" ></div> <div class="likeCount" id="likeCount<%= i+1 %>"><%= item.praise %></div>
             </div>
         </div>
 		<div class="hah" onclick="displayLog(event);">
@@ -149,7 +149,7 @@
         }
 
         
-        
+       //item.praisedPerson.some(function(item.praisedPerson){ return item.praisedPerson.person==sessionName})?-2200px:0px  
 $(document).ready(function()
 {
 
