@@ -155,8 +155,9 @@ router.get('/home', function(req, res, next) {
 		// return;
 	// }
 	var user = global.offerModel.getModel('user');
-	//找出新注册用户（必须有头像），前三位
-	user.find({"logoPath": {$exists: true}})
+	//找出所有用户（必须有头像），倒序，排除自己
+	var con = !req.session.user? {"logoPath": {$exists: true}}: {"logoPath": {$exists: true},userName:{$ne: req.session.user.userName}};
+	user.find(con)
 		.sort("-createAt")
 		//.limit(3)
 		.exec(function(err, docs) {
@@ -225,13 +226,11 @@ router.get('/viewLog', function(req, res, next) {
 			});
 			var temArr = praiseArr.join('|').split('|');
 			var arr;
-// return res.send(temArr);
 			if(temArr && temArr.length != 0){
 				arr = temArr.map(function(temArr) {return JSON.parse(JSON.stringify(temArr));});
 			}else{
 				arr = [{person: {}}];
 			}
-		// return res.send( arr[1]);
 			// return res.send(newArr.map(function(i){return i.praisedPerson});
 			res.render('viewLog', {
 				title: '日志列表',
