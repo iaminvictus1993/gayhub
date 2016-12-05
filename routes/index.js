@@ -32,7 +32,7 @@ router.get('/plus', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-    res.render('login', {title: 'Hello! Gay Hub'});
+    res.render('login_mobile', {title: '登录页面'});
 });
 
 //渲染注册页面
@@ -47,7 +47,7 @@ router.get('/register2', function(req, res, next) {
 
 //渲染登录页面
 router.get('/login', function(req, res, next) {
-    res.render('login', {title: 'Hello! Gay Hub'});
+    res.render('login_mobile', {title: '登录页面'});
 });
 
 //渲染发布信息页面
@@ -166,11 +166,11 @@ router.get('/home', function(req, res, next) {
 				return;
 			}
 			if(!docs || docs.length === 0) {
-                res.render('home', {title: '主页面', source:docs});
+                res.render('home_mobile', {title: '主页面', source:docs});
                 return;
 			}
             var sessionName = req.session.user?'切换账号':'请登录';
-			res.render('home', {title: '主页面', source:docs, name: sessionName});
+			res.render('home_mobile', {title: '主页面', source:docs, name: sessionName});
 		});
 
 
@@ -179,7 +179,9 @@ router.get('/home', function(req, res, next) {
 //渲染查看他人日志页面
 router.get('/viewLog', function(req, res, next) {
 	if(!req.session.user) {
-		res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
+		req.flash('info', "用户未登录，请登录！");
+		res.redirect("/home");
+		//res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
 		return;
 	}    
 	try{
@@ -199,7 +201,9 @@ router.get('/viewLog', function(req, res, next) {
 			return;
 		}
 		if(!totaldocs || totaldocs.length === 0) {
-			res.send("<h1>暂未日志数据</h1><br/><a href='./home'>返回主页</a>");
+			req.flash('info', "对方暂未日志数据");
+			res.redirect("/home");
+			//res.send("<h1>暂未日志数据</h1><br/><a href='./home'>返回主页</a>");
 			return;
 		}
         //实现分页操作
@@ -247,7 +251,7 @@ router.get('/viewLog', function(req, res, next) {
 
 //渲染修改密码页面
 router.get('/changePassword', function(req, res, next) {
-    res.render('changePassword_mobile', {title: '修改密码页面.'});
+    res.render('changePassword_mobile', {title: '修改密码页面'});
 });
 
 //渲染我的信息页面

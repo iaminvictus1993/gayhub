@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+	<link href="stylesheets/bootstrap.css" rel="stylesheet">
+	<link href="stylesheets/home.css" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="javascripts/jquery.mobile-1.4.5.js"></script>
+  </head>
+  <body>
+	<div data-role="page">
+    <div data-role="header">
+    <a href="./exit" class="ui-btn ui-corner-all ui-shadow ui-icon-power ui-btn-icon-left">退出</a>
+    <h1><%= title %></h1>
+    </div>
+	  	<h1 style="color:red;"><%= info %></h1>
+    <div data-role="navbar">
+      <ul>
+		<li class="active"><a href="./home">大厅</a></li>
+		<li><a href="./myInfo">个人信息</a></li>
+		<li><a href="./logList">我的日志</a></li>
+		<li><a href="./chatTogether">群聊</a></li>
+		<li id="btnLogin"><a href="#"><%= name %></a></li>
+		<!-- <li><a href="./exit">退出</a></li> -->
+      </ul>
+    </div>
+    <!--
+	<div id="mask">
+    </div>
+	 <div id="login">
+        <div class="loginCon">
+            <div id="close"></div>
+        </div>
+    </div> -->
+    <!-- <div id="mainCon">
+        <div id="list" style="left:-600px;">
+            <img src="img/g5.jpg" alt="5"/>
+            <img src="img/g4.jpg" alt="1"/>
+            <img src="img/g3.jpg" alt="2"/>
+            <img src="img/g2.jpg" alt="3"/>
+            <img src="img/g1.jpg" alt="4"/>
+            <img src="img/g5.jpg" alt="5"/>
+            <img src="img/g4.jpg" alt="1"/>
+        </div>
+        <div id="buttons">
+            <span index="1" class="on"></span>
+            <span index="2"></span>
+            <span index="3"></span>
+            <span index="4"></span>
+            <span index="5"></span>
+        </div>
+        <a href="javascript:void(0);" id="prev" class="arrow">&lt;</a>
+        <a href="javascript:;" id="next" class="arrow">&gt;</a>
+        <!-- href="javascript:....." 阻止<a>浏览器默认行为,页面内容较多时，有滚动条时，点击不会出现内容乱跳
+    </div> -->
+	
+
+  
+	<ul data-role="listview" data-inset="true">
+	<% for(var i=0; i<source.length; i++) { %>  
+			<li style="left: -100px;position: relative;width:9999999px;" class="container22">
+			<a href="./viewLog?id=<%= source[i]._id %>" /><img style="position: relative;float: left;border-radius:50%;" src="<%= decodeURIComponent(source[i].logoPath).slice(20) %>" />            <div class="item">昵称：<%= source[i].name %></div>
+            <div class="item">年纪：<%= source[i].age %></div>
+            <div class="item">性别：<% if(source[i].sex ===0 ) {
+                            var a = "男";
+                        }else if(source[i].sex === 1) {
+                            var a = "女";
+                        }else {
+                            var a = "其它";
+                        } %><%= a %></div>
+                        
+            <div class="item">取向：<% if(source[i].sexFor ===0 ) {
+                            var a = "男";
+                        }else if(source[i].sexFor === 1) {
+                            var a = "女";
+                        }else {
+                            var a = "通吃";
+                        } %><%= a %></div> </a>
+            <!-- <img class="logo" src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'></img> -->
+
+			</li>       
+        
+    <% } %> 
+	<ul>  
+	</div>
+    <script src="javascripts/home.js"> </script>
+  </body>
+</html>

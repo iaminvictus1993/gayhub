@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+    </style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="javascripts/jquery.mobile-1.4.5.js"></script>
+  </head>
+  <body>
+    <div data-role="page" class="container">
+    <div data-role="header">
+    <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+    <h1><%= title %></h1>
+    </div>
+    <div data-role="main" class="ui-content">
+    <h1 style="color:red;"><%= error %></h1>
+    <form action="./login" method="post" class="container1">
+        <input class="inputArea" type="text" placeholder="请输入账号" name="userName"/>&nbsp&nbsp&nbsp
+        <input class="inputArea" type="password" placeholder="请输入密码" style="display:inline;" name="passWord"/>&nbsp
+        <input class="login" type="submit" value="登录" />
+		<input class="login" type="submit" value="注册账号" onclick='window.open("./register", "_self");return false;' />
+		<input class="login" type="submit" value="忘记密码" onclick='window.open("./changePassword", "_self");return false;' />	
+		<input class="login" type="submit" value="游客浏览" onclick='window.open("./home", "_self");return false;' />	
+		<br/> 
+    </form>
+    </div>
+	</div>
+  </body>
+</html>

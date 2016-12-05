@@ -17,26 +17,24 @@
     <div data-role="main" class="ui-content">
     <form action="./register" method="post">
   		<label for="userName">账号：</label>
-        <input type="text" placeholder="请输入账号" name="userName" id="userName"/><br/>
+        <input type="text" placeholder="请输入账号" name="userName" id="userName"/>
 
   		<label for="em">邮箱：</label>
-  		<input type="email" id="em" placeholder="请输入邮箱" name="email" /><button onclick='aa(event);' id="pp">获取邮箱验证码</button><br/>
+  		<input type="email" id="em" placeholder="请输入邮箱" name="email" /><button onclick='aa(event);' id="pp">获取邮箱验证码</button>
 
   		<label for="emailCode">邮箱验证码：</label>
-  		<input type="text" placeholder="请输入邮箱验证码" name="emailCode" id="emailCode"/><br/>
+  		<input type="text" placeholder="请输入邮箱验证码" name="emailCode" id="emailCode"/>
 
 
   		<label for="passWord1">输入密码：</label>
-  		<input type="password" placeholder="请输入密码" name="passWord1" id="passWord1"/><br/>
+  		<input type="password" placeholder="请输入密码" name="passWord1" id="passWord1"/>
 
   		<label for="passWord2">确认密码：</label>
-  		<input type="password" placeholder="请确认密码" name="passWord2" id="passWord2"/><br/>
+  		<input type="password" placeholder="请确认密码" name="passWord2" id="passWord2"/>
 
-	<div data-role="footer">
         <input type="submit" value="注册" />
 		<input type="submit" value="登录页面" onclick='window.open("./login", "_self");return false;'/>
 		<input type="submit" value="修改密码" onclick='window.open("./changePassword", "_self");return false;'/>
-	</div>
     </form>
     </div>
 </div>

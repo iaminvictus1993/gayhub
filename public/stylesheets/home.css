@@ -3,12 +3,12 @@
     display: inline;
 }
 .logo{
-    width: 120px;
-    height: 120px;
+    width: 103px;
+    height: 103px;
     border-radius: 50%;
     float: left;
 }
-#container {
+.container {
     border-bottom: 2px solid black;
     height: 130px;
     margin-top: 20px;
