@@ -248,7 +248,7 @@ router.get('/viewLog', function(req, res, next) {
 
 //渲染修改密码页面
 router.get('/changePassword', function(req, res, next) {
-    res.render('changePassword_mobile', {title: '修改密码页面'});
+    res.render('changePassword_mobile', {title: '修改密码页面.'});
 });
 
 //渲染我的信息页面
