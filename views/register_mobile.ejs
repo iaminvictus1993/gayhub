@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  </head>
+  <body>
+        <!-- <div style="right:0;position:absolute;"><a href="./home"><img style="width:40px;height:40px;" src="img/home.png" alt="返回主页" /></a></div> -->
+<div data-role="page">
+    <div data-role="header">
+    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+    <h1><%= title %></h1>
+    </div>
+    <div data-role="main" class="ui-content">
+    <form action="./register" method="post">
+  		<label for="userName">账号：</label>
+        <input type="text" placeholder="请输入账号" name="userName" id="userName"/><br/>
+
+  		<label for="em">邮箱：</label>
+  		<input type="email" id="em" placeholder="请输入邮箱" name="email" /><button onclick='aa(event);' id="pp">获取邮箱验证码</button><br/>
+
+  		<label for="emailCode">邮箱验证码：</label>
+  		<input type="text" placeholder="请输入邮箱验证码" name="emailCode" id="emailCode"/><br/>
+
+
+  		<label for="passWord1">输入密码：</label>
+  		<input type="password" placeholder="请输入密码" name="passWord1" id="passWord1"/><br/>
+
+  		<label for="passWord2">确认密码：</label>
+  		<input type="password" placeholder="请确认密码" name="passWord2" id="passWord2"/><br/>
+
+	<div data-role="footer">
+        <input type="submit" value="注册" />
+		<input type="submit" value="登录页面" onclick='window.open("http://localhost:3000/login", "_self");return false;'/>
+		<input type="submit" value="修改密码" onclick='window.open("./changePassword", "_self");return false;'/>
+	</div>
+    </form>
+    </div>
+</div>
+	<script>
+		function aa(event) {
+            //邮箱发送间隔
+            var node = document.getElementById("pp");
+            node.setAttribute("disabled", true);
+            var count = 60;
+            var timer = setInterval(function(){
+                node.innerHTML = count+"秒后重发";
+                //node.onclick = null;
+                count--;
+                if(count == -1) {
+                    clearInterval(timer);
+                    node.innerHTML = "获取邮箱验证码";
+                    node.removeAttribute("disabled");
+                    //node.onclick = aa;
+                }
+            }, 1000);            
+			event.preventDefault();
+			event.stopPropagation();
+			var temEmail = document.getElementById('em').value;
+			console.log(temEmail);
+			//对temEmail编码
+			var email = encodeURIComponent(temEmail);
+			console.log(email);
+			//发送ajax请求
+			var xhr;
+			if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+				xhr=new XMLHttpRequest();
+			}else {// code for IE6, IE5
+				xhr=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xhr.onreadystatechange=function() {
+				if (xhr.readyState==4 && xhr.status==200) {
+					console.log('发送完成');
+				}
+			}
+			xhr.open("POST","./sendEmailCode",true);
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.send("email="+email);
+		}		
+	</script>
+  </body>
+</html>

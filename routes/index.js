@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
 
 //渲染注册页面
 router.get('/register', function(req, res, next) {
-    res.render('register', {title: '注册页面'});
+    res.render('register_mobile', {title: '注册账号'});
 });
 
 //渲染注册页面
