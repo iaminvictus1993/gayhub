@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
 
 //渲染注册页面
 router.get('/register', function(req, res, next) {
-    res.render('register', {title: '注册页面'});
+    res.render('register_mobile', {title: '注册账号'});
 });
 
 //渲染注册页面
@@ -247,7 +247,7 @@ router.get('/viewLog', function(req, res, next) {
 
 //渲染修改密码页面
 router.get('/changePassword', function(req, res, next) {
-    res.render('changePassword', {title: '修改密码页面'});
+    res.render('changePassword_mobile', {title: '修改密码页面.'});
 });
 
 //渲染我的信息页面
