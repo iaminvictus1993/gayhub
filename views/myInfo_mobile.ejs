@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+	<script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="javascripts/jquery.mobile-1.4.5.js"></script>
+  </head>
+  <body>
+	<div data-role="page">
+		<div data-role="header">
+			<a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+			<h1><%= title %></h1>
+		</div>
+		<div data-role="main" class="ui-content">
+		<form role="form" action="./submitMyInfo" method="post" enctype="multipart/form-data" data-ajax="false">
+			<div>
+				<label for="name">网名</label>
+				<div>
+					<input type="text" name="name" 
+						   id="name" placeholder="请输入一个帅气的网名" value="<%= currentUser.name %>"/>
+				</div>
+			</div>
+			<div>
+				<label for="age">年纪</label>
+				<div>
+					<input type="number" class="form-control" name="age" 
+						   id="age" placeholder="请输入年纪" value="<%= currentUser.age %>"/>
+				</div>
+			</div>
+			<div>
+				<label for="sex">性别</label>
+				<div>
+					<select name="sex" id="sex">
+						<option value="0">男</option>
+						<option value="1">女</option>
+						<option value="2">其它</option>
+					</select>
+				</div>
+			</div>
+			<div>
+				<label for="sexFor">取向</label>
+				<div>
+					<select name="sexFor" id="sexFor">
+						<option value="0">男</option>
+						<option value="1">女</option>
+						<option value="2">通吃</option>
+					</select>
+				</div>
+			</div>
+			<div>
+				<label for="logo">头像</label>
+				<div>
+					<input type="file" name="logo" id="logo" onChange="valChange();"/>
+				</div>
+			</div>
+			<img style="width:200px;height:200px;" src="<%= decodeURIComponent(currentUser.logoPath).slice(20) %>" />
+			</br>
+			<div>
+				<div>
+					<input type="submit" value="提交按钮" />
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
+	<div style="display:none;" id="temp1"><%= currentUser.sex %></div>
+    <div style="display:none;" id="temp2"><%= currentUser.sexFor %></div>
+	<script>
+		function setSelected() {
+			var a = document.getElementById("sex").children;
+            //所获得的元素节点是类数组，故用call绑定执行上下文
+            Array.prototype.forEach.call(a, function(item) {
+                if(item.value == document.getElementById("temp1").innerHTML){
+                    console.log(item.value);
+                    item.setAttribute('selected', 'selected');
+                    console.log(item);
+                }
+            });
+			var b = document.getElementById("sexFor").children;
+            Array.prototype.forEach.call(b, function(item) {
+                if(item.value == document.getElementById("temp2").innerHTML){
+                    console.log(item.value);
+                    item.setAttribute('selected', 'selected');
+                    console.log(item);
+                }
+            });           
+		}
+		function valChange(){
+			$("img")[0].src = "uploads"+$("#logo")[0].value.slice(11);
+		}
+		window.onload = setSelected;
+	</script>
+  </body>
+</html>
