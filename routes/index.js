@@ -77,7 +77,7 @@ router.get('/log', function(req, res, next) {
 			item.content = decodeURIComponent(item.content);
 			newArr.push(item);
 		});
-		res.render('log', {
+		res.render('log_mobile', {
 			title: '新建日志',
 			logSource: newArr
 		});		
@@ -518,7 +518,7 @@ router.post("/publishLog", function(req, res, next) {
                 return;
             }
             req.flash("info", "发出成功");
-            res.redirect("/log");
+            res.redirect("/logList");
         });
     });
 });

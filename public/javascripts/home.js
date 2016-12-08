@@ -48,7 +48,7 @@
 };
 window.onload = function() {
     var oBtn = document.getElementById("btnLogin");
-        oBtn.onclick = openNew;
+        //oBtn.onclick = openNew;
     //增加轮播图功能
     var mainCon = document.getElementById('mainCon');
     var list = document.getElementById('list');

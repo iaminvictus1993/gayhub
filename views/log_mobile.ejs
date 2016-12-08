@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <style>
+        .container{
+            margin: auto;
+        }
+        #header{
+            font-size:90px;
+            color: gray;
+         
+        }
+        .inputArea{
+            border: 1px solid gray;
+            height:30px;
+            width:500px;
+        }
+        .login{
+            background-color: rgba(32, 179, 32, 0.51);
+            border: 1px solid gray;
+            height:30px;
+            width:90px;
+            border-radius:6%;
+        }
+        .textarea{
+            height:380px;
+        }
+    </style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+	<script src="javascripts/jquery-1.10.2.js"></script>
+	<script src="javascripts/jquery.mobile-1.4.5.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor.min.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor_lang/zh-cn.js"></script>
+  </head>
+  <body style="background-image:url(./img/9.jpg);display:flex;">
+	<div data-role="page">
+		<div data-role="header">
+			<a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+			<h1><%= title %></h1>
+		</div>
+		<div data-role="main" class="ui-content">
+			<p style="color:red;"><%= info %></p>
+			<form action="./publishLog" method="post" class="container1">
+				<input class="inputArea" type="text" placeholder="标题"  name="title"/><br/>
+				<textarea class="inputArea textarea xheditor" placeholder="正文" name="content"></textarea><br/><br/>
+				<input class="login" type="submit" value="发布" />
+				<input class="login" type="submit" value="重置全部" onclick='clearContent(event);return false;' />
+				<input id="displayInfo" class="login" type="submit" value="显示我的日志" onclick='window.open("./logList?page=1","_self");return false;' />
+				<br/> 
+			</form>
+		</div>
+	</div>
+    <script>
+        function clearContent(event) {
+            event.preventDefault();
+			event.stopPropagation();        
+            var nodeArr = document.getElementsByClassName("inputArea");
+            Array.prototype.forEach.call(nodeArr, function(item) {
+                item.value = null;
+            });
+			//其实form有reset方法
+        }	
+    </script>
+  </body>
+</html>
