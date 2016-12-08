@@ -169,8 +169,8 @@ router.get('/home', function(req, res, next) {
                 res.render('home_mobile', {title: '主页面', source:docs});
                 return;
 			}
-            var sessionName = req.session.user?'切换账号':'请登录';
-			res.render('home_mobile', {title: '主页面', source:docs, name: sessionName});
+            var sessionUser = req.session.user?req.session.user:{userName: '请登录'};
+			res.render('home_mobile', {title: '主页面', source:docs, user: sessionUser});
 		});
 
 
@@ -630,7 +630,7 @@ router.get("/showComment", function(req, res, next) {
 //日志顶踩功能，并向praisedPerson插入数据
 router.get("/updownPraise",function(req, res, next) {
     var increase = req.query.increase;
-    var logId = req.query.logId
+    var logId = req.query.logId;
     // return res.send(logId);
     //
     var log = global.offerModel.getModel("log");
