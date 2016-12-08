@@ -270,7 +270,7 @@ router.get('/myInfo', function(req, res, next) {
             res.send({msg: "no data"});
             return;
         }
-        res.render('myInfo', {title: '我的信息页面', currentUser: data, logoPath: decodeURIComponent(data.logoPath)});
+        res.render('myInfo_mobile', {title: '我的信息页面', currentUser: data, logoPath: decodeURIComponent(data.logoPath)});
     });
 });
 
@@ -543,6 +543,7 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
 		res.send("<h1>用户未登录</h1><br/><a href='./login'>前往登录</a>");
 		return;
 	}
+	// return res.send(req.file.originalname);
     //把这些信息更新到相应user数据中
     var updateInfo = {};
     //处理路径,用以后面<img>的src

@@ -1,0 +1,2 @@
+jquerymobile 下面 form 表单提交 和普通html没区别，最主要是 <form 要加一个 data-ajax='false' 否则 上传会失败
+
