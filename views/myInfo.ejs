@@ -60,7 +60,7 @@
 	<script>
 		function setSelected() {
 			var a = document.getElementById("sex").children;
-            //所获得的元素节点是类数组，故用call绑定执行上下文
+            //所得的元素节点是类数组，故用call绑定执行上下文
             Array.prototype.forEach.call(a, function(item) {
                 if(item.value == document.getElementById("temp1").innerHTML){
                     console.log(item.value);
