@@ -52,7 +52,7 @@
 			<div>
 				<label for="logo">头像</label>
 				<div>
-					<input type="file" name="logo" id="logo" onChange="valChange();"/>
+					<input type="file" name="logo" id="logo" onchange="valChange();"/>
 				</div>
 			</div>
 			<img style="width:200px;height:200px;" src="<%= decodeURIComponent(currentUser.logoPath).slice(20) %>" />
@@ -90,6 +90,7 @@
 		function valChange(){
 			//$("img")[0].src = "uploads"+$("#logo")[0].value.slice(11);
 			//$("img")[0].src = $("#logo")[0].files[0].getAsDataURL();
+            //alert(1);
 			$("img")[0].src = window.URL.createObjectURL($("#logo")[0].files[0]);
 		}
 		window.onload = setSelected;

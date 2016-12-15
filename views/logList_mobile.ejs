@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+    <script src="javascripts/jquery-1.10.2.js"></script>
+    <script src="javascripts/jquery.mobile-1.4.5.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor.min.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor_lang/zh-cn.js"></script>
+  </head>
+  <body>
+  <div data-role="page" class="container">
+    <div data-role="header">
+        <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+        <h1><%= title %></h1>
+    </div>
+    <div data-role="main" class="ui-content" id="myLog">
+        <div id="search">
+            <input type="text" id="input" placeholder="支持按标题和内容模糊查找" onkeydown="enterInput(event);" />
+            <input type="button" id="go" value="搜索日志"/>
+        </div>
+        <%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
+            <a href="./logList?page=<%= i %>"> <%= i %></a>
+        <%}%>
+        <ul data-role="listview" data-inset="true" >
+		    <%logSource.forEach(function(item) { %>
+                <li>
+            		<div id="hah" onclick="displayLog(event);">
+            			<div class="cont">标题：<%= item.title %></div>
+            			<div class="cont">作者：<%= item.author %></div>
+            			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
+            			<div class="cont">内容：<%= item.content %></div>
+            		</div>
+                </li>
+		    <% }); %> 
+        </ul>
+	</div>
+    <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>
+  </div>
+    <script>
+        function displayLog(event) {
+            var url = "./logDetail_mobile?t="
+                      +encodeURIComponent(event.target.parentNode.childNodes[1].innerText)
+                      +"&d="+encodeURIComponent(event.target.parentNode.childNodes[7].innerText);
+            window.open(url,"_self");
+        }
+        function enterInput(event) {
+            //event.preventDefault(); 若阻止该默认事件，input不能输入值
+            event.stopPropagation();
+            if(window.event) {
+                keynum = event.keyCode
+            }
+            else if(event.which) {
+                keynum = event.which
+            }
+            if(keynum == 13) {
+                var searchValue = document.getElementById("input").value;
+                window.open("./logList?search="+searchValue,"_self");
+            }
+        } 
+        window.onload = function() {
+            var newLogNode = document.getElementById("newLog");
+            setInterval(function(){
+                if(newLogNode.style.transform != "rotate(8deg)") {
+                    newLogNode.style.transform = "rotate(8deg)";
+                }else{
+                    newLogNode.style.transform = "rotate(-8deg)";
+                }
+
+            },1000);
+            var searchNode = document.getElementById("go");
+            searchNode.onclick = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var searchValue = document.getElementById("input").value;
+                window.open("./logList?search="+searchValue,"_self");
+            };
+        };
+    </script>
+  </body>
+</html>

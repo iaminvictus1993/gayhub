@@ -139,7 +139,7 @@ router.get('/logList', function(req, res, next) {
 				item.content = decodeURIComponent(item.content);
 				newArr.push(item);
 			});
-			res.render('logList', {
+			res.render('logList_mobile', {
 				title: '日志列表',
 				logSource: newArr,
 				totalSource: totaldocs
@@ -646,5 +646,14 @@ router.get("/updownPraise",function(req, res, next) {
         }
         res.send(data);
     });
+});
+//跳转进入日志详情页面
+router.get("/logDetail_mobile", function(req, res, next) {
+	var title = decodeURIComponent(req.query.t);
+	var data = decodeURIComponent(req.query.d);
+	res.render("logDetail_mobile",{
+		title: title.slice("3"),
+		data: data.slice("3")
+	});
 });
 module.exports = router;

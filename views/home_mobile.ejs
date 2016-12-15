@@ -43,24 +43,24 @@
                 <ul data-role="listview" data-inset="true" data-filter="true" data-input="#myFilter">
                     <% for(var i=0; i<source.length; i++) { %>  
                             <li class="container22">
-                            <a style="position: relative;margin-left: -10px;padding-left: 10px;" href="./viewLog?id=<%= source[i]._id %>" /><img style="position: relative;float: left;border-radius:50%;" src="<%= decodeURIComponent(source[i].logoPath).slice(20) %>" />            <div class="item">昵称：<%= source[i].name %></div>
-                            <div class="item">年纪：<%= source[i].age %></div>
-                            <div class="item">性别：<% if(source[i].sex ===0 ) {
-                                            var a = "男";
-                                        }else if(source[i].sex === 1) {
-                                            var a = "女";
-                                        }else {
-                                            var a = "其它";
-                                        } %><%= a %></div>
-                                        
-                            <div class="item">取向：<% if(source[i].sexFor ===0 ) {
-                                            var a = "男";
-                                        }else if(source[i].sexFor === 1) {
-                                            var a = "女";
-                                        }else {
-                                            var a = "通吃";
-                                        } %><%= a %></div> </a>
-                            <!-- <img class="logo" src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'></img> -->
+                                <a style="position: relative;margin-left: -10px;padding-left: 10px;" href="./viewLog?id=<%= source[i]._id %>" /><img style="position: relative;float: left;border-radius:50%;" src="<%= decodeURIComponent(source[i].logoPath).slice(20) %>" />            <div class="item">昵称：<%= source[i].name %></div>
+                                <div class="item">年纪：<%= source[i].age %></div>
+                                <div class="item">性别：<% if(source[i].sex ===0 ) {
+                                                var a = "男";
+                                            }else if(source[i].sex === 1) {
+                                                var a = "女";
+                                            }else {
+                                                var a = "其它";
+                                            } %><%= a %></div>
+                                            
+                                <div class="item">取向：<% if(source[i].sexFor ===0 ) {
+                                                var a = "男";
+                                            }else if(source[i].sexFor === 1) {
+                                                var a = "女";
+                                            }else {
+                                                var a = "通吃";
+                                            } %><%= a %></div> </a>
+                                <!-- <img class="logo" src='<%= decodeURIComponent(source[i].logoPath).slice(20) %>'></img> -->
 
                             </li>       
                         
@@ -68,6 +68,5 @@
                 <ul>
             </div>
         </div>
-        <script src="javascripts/home.js"> </script>
     </body>
 </html>
