@@ -8,6 +8,11 @@
     border-radius: 50%;
     float: left;
 }
+.panelLogo{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
 .container {
     border-bottom: 2px solid black;
     height: 130px;

@@ -13,7 +13,7 @@
   <div data-role="page" class="container">
     <div data-role="header">
         <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
-        <h1>1</h1>
+        <h1>日志详情</h1>
     </div>
     <div data-role="main" class="ui-content" id="myLog">
         <div id="display">
@@ -24,9 +24,6 @@
     <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>
   </div>
     <script>
-        function displayLog(event) {
-            alert(1);
-        }
         function enterInput(event) {
             //event.preventDefault(); 若阻止该默认事件，input不能输入值
             event.stopPropagation();

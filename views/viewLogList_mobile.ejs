@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.4.5.css">
+    <link href="stylesheets/praise.css" rel="stylesheet" />
+    <script src="javascripts/jquery-1.10.2.js"></script>
+    <script src="javascripts/jquery.mobile-1.4.5.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor.min.js"></script>
+    <script type="text/javascript" src="javascripts/xheditor_lang/zh-cn.js"></script>
+  </head>
+  <body>
+  <div data-role="page" class="container">
+    <div data-role="header">
+        <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+        <h1><%= title %></h1>
+    </div>
+    <div data-role="main" class="ui-content" id="myLog">
+        <div id="search">
+            <input type="text" id="input" placeholder="支持按标题和内容模糊查找" onkeydown="enterInput(event);" />
+            <input type="button" id="go" value="搜索日志"/>
+        </div>
+        <%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
+            <a href=<%= originalUrl+"&page="+ i %>> <%= i %></a>
+        <%}%>
+        <ul data-role="listview" data-inset="true" >
+		    <%logSource.forEach(function(item, i) { %>
+                <li>
+                    <div id="container">
+                        <div class="feed" id="feed<%= i+1 %>" >
+                            <div class="heart" style="background-position:<%=  praisedPersonArr[i].indexOf(sessionName) != -1?-2200:0 %>px" id="like<%= i+1 %>" rel="<%=  praisedPersonArr[i].indexOf(sessionName) != -1?'unlike':'like' %>" ></div> <div class="likeCount" id="likeCount<%= i+1 %>"><%= item.praise %></div>
+                        </div>
+                    </div>
+            		<div id="hah" onclick="displayLog(event);">
+            			<div class="cont">标题：<%= item.title %></div>
+            			<div class="cont">作者：<%= item.author %></div>
+            			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
+            			<div class="cont">内容：<%= item.content %></div>
+                        <div class="cont">logId：<%= item._id %></div>
+            		</div>
+                </li>
+		    <% }); %> 
+        </ul>
+	</div>
+    <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>
+  </div>
+    <script>
+        function displayLog(event) {
+            var url = "./logDetail_mobile?t="
+                      +encodeURIComponent(event.target.parentNode.childNodes[1].innerText)
+                      +"&d="+encodeURIComponent(event.target.parentNode.childNodes[7].innerText);
+            window.open(url,"_self");
+        }
+        function enterInput(event) {
+            //event.preventDefault(); 若阻止该默认事件，input不能输入值
+            event.stopPropagation();
+            if(window.event) {
+                keynum = event.keyCode
+            }
+            else if(event.which) {
+                keynum = event.which
+            }
+            if(keynum == 13) {
+                var searchValue = document.getElementById("input").value;
+                window.open("./logList?search="+searchValue,"_self");
+            }
+        } 
+        window.onload = function() {
+            var newLogNode = document.getElementById("newLog");
+            setInterval(function(){
+                if(newLogNode.style.transform != "rotate(8deg)") {
+                    newLogNode.style.transform = "rotate(8deg)";
+                }else{
+                    newLogNode.style.transform = "rotate(-8deg)";
+                }
+
+            },1000);
+            var searchNode = document.getElementById("go");
+            searchNode.onclick = function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var searchValue = document.getElementById("input").value;
+                window.open("./logList?search="+searchValue,"_self");
+            };
+        };
+$(document).ready(function() {
+    $('body').on("click", '.heart', function() {
+        var A = $(this).attr("id");
+        var B = A.split("like");
+        var messageID = B[1];
+        var C = parseInt($("#likeCount" + messageID).html());
+        $(this).css("background-position", "")
+        var D = $(this).attr("rel");
+        var logId = $(this).parent().parent().next().children().last().text().slice(6);
+        if (D === 'like') {
+            $("#likeCount" + messageID).html(C + 1);
+            $(this).addClass("heartAnimation").attr("rel", "unlike");
+            $.get("./updownPraise?increase=true&logId=" + logId, function(data, status) {
+                //alert("数据：" + data + "\n状态：" + status);
+                console.log("数据：" + data + "\n状态：" + status);
+            });
+        } else {
+            $("#likeCount" + messageID).html(C - 1);
+            $(this).removeClass("heartAnimation").attr("rel", "like");
+            $(this).css("background-position", "left");
+            $.get("./updownPraise?increase=false&logId=" + logId, function(data, status) {
+                //alert("数据：" + data + "\n状态：" + status);
+                console.log("数据：" + data + "\n状态：" + status);
+            });
+        }
+    });
+});
+    </script>
+  </body>
+</html>

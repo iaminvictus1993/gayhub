@@ -150,50 +150,33 @@
 
         
        //item.praisedPerson.some(function(item.praisedPerson){ return item.praisedPerson.person==sessionName})?-2200px:0px  
-$(document).ready(function()
-{
-
-$('body').on("click",'.heart',function()
-{
-	
-	var A=$(this).attr("id");
-	var B=A.split("like");
-	var messageID=B[1];
-	var C=parseInt($("#likeCount"+messageID).html());
-	$(this).css("background-position","")
-	var D=$(this).attr("rel");
-    var logId = $(this).parent().parent().next().children().last().text().slice(6);
-	if(D === 'like') 
-	{      
-        $("#likeCount"+messageID).html(C+1);
-        $(this).addClass("heartAnimation").attr("rel","unlike");
-        
-
-        $.get("./updownPraise?increase=true&logId="+logId,function(data,status){
-          //alert("数据：" + data + "\n状态：" + status);
-          console.log("数据：" + data + "\n状态：" + status);
+        $(document).ready(function() {
+            $('body').on("click", '.heart', function() {
+                var A = $(this).attr("id");
+                var B = A.split("like");
+                var messageID = B[1];
+                var C = parseInt($("#likeCount" + messageID).html());
+                $(this).css("background-position", "")
+                var D = $(this).attr("rel");
+                var logId = $(this).parent().parent().next().children().last().text().slice(6);
+                if (D === 'like') {
+                    $("#likeCount" + messageID).html(C + 1);
+                    $(this).addClass("heartAnimation").attr("rel", "unlike");
+                    $.get("./updownPraise?increase=true&logId=" + logId, function(data, status) {
+                        //alert("数据：" + data + "\n状态：" + status);
+                        console.log("数据：" + data + "\n状态：" + status);
+                    });
+                } else {
+                    $("#likeCount" + messageID).html(C - 1);
+                    $(this).removeClass("heartAnimation").attr("rel", "like");
+                    $(this).css("background-position", "left");
+                    $.get("./updownPraise?increase=false&logId=" + logId, function(data, status) {
+                        //alert("数据：" + data + "\n状态：" + status);
+                        console.log("数据：" + data + "\n状态：" + status);
+                    });
+                }
+            });
         });
-    
-    
-
-	
-	}
-	else
-	{
-        $("#likeCount"+messageID).html(C-1);
-        $(this).removeClass("heartAnimation").attr("rel","like");
-        $(this).css("background-position","left");
-        $.get("./updownPraise?increase=false&logId="+logId,function(data,status){
-          //alert("数据：" + data + "\n状态：" + status);
-          console.log("数据：" + data + "\n状态：" + status);
-        });
-	}
-
-
-});
-
-
-});
     </script>
   </body>
 </html>

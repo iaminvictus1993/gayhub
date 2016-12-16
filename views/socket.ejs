@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <script src="../socket.io/socket.io.js"></script>
-    <!-- <script src="javascripts/jquery-3.1.1.js"></script> -->
+    <script src="javascripts/socket.io.js"></script>
+    <script src="javascripts/jquery-3.1.1.js"></script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -31,8 +31,6 @@
 			e.stopPropagation();
 			//return false; //感觉还是不能作为.preventDefault();stopPropagation();的合成写法
 		}
-
-
       socket.on('message', function(obj){
         //es6模板字符串语法
 		var msgNode = document.getElementById("messages");

@@ -236,7 +236,7 @@ router.get('/viewLog', function(req, res, next) {
 				arr = [{person: {}}];
 			}
 			// return res.send(newArr.map(function(i){return i.praisedPerson});
-			res.render('viewLog', {
+			res.render('viewLogList_mobile', {
 				title: '日志列表',
 				logSource: newArr,
 				totalSource: totaldocs,
@@ -547,7 +547,9 @@ router.post("/submitMyInfo",uploads.single('logo'), function(req, res, next) {
     //把这些信息更新到相应user数据中
     var updateInfo = {};
     //处理路径,用以后面<img>的src
-    updateInfo.logoPath = encodeURIComponent(path.normalize('http://localhost:3000/'+req.file.path.slice(7)));
+    if(req.file && req.file.path) {
+        updateInfo.logoPath = encodeURIComponent(path.normalize('http://localhost:3000/'+req.file.path.slice(7)));
+    }
 	//return res.send(encodeURIComponent(updateInfo.logoPath));
     updateInfo.name = req.body.name;
     updateInfo.age = req.body.age;
@@ -632,8 +634,6 @@ router.get("/showComment", function(req, res, next) {
 router.get("/updownPraise",function(req, res, next) {
     var increase = req.query.increase;
     var logId = req.query.logId;
-    // return res.send(logId);
-    //
     var log = global.offerModel.getModel("log");
     log.findByIdAndUpdate(logId, increase === "true"?{"$inc":{"praise": 1}, "$addToSet":{praisedPerson:{person:req.session.user.name}}}:{"$inc":{"praise": -1},"$pull":{praisedPerson:{person:req.session.user.name}}},{new:true, upsert: true}, function(err, data) {
         if(err) {
