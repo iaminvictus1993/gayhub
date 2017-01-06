@@ -12,13 +12,13 @@
   <body>
   <div data-role="page" class="container">
     <div data-role="header">
-        <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+        <a href="./home" data-ajax='false' class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
         <h1>日志详情</h1>
     </div>
     <div data-role="main" class="ui-content" id="myLog">
         <div id="display">
-            <input class="inputArea" type="text" placeholder="标题"  name="title" disabled value="<%= title %>" /><br/><br/>
-            <div id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled><%= data %></div><br/><br/>
+            <input class="inputArea" style="border:2px solid black; color:red;" type="text" placeholder="标题"  name="title" disabled value="<%= title %>" /><br/><br/>
+            <div id="txt" class="inputArea textarea " placeholder="正文" name="content" disabled><%- data %></div><br/><br/>
         </div>      
     </div>
     <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>

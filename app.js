@@ -19,7 +19,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);   
 
-io.on('connection', (socket) => {
+io.on('connection', (socket	) => {
     console.log('a connected');
     socket.on('disconnect', function(){
         console.log('user disconnected');

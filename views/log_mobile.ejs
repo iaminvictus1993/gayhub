@@ -37,12 +37,12 @@
   <body style="background-image:url(./img/9.jpg);display:flex;">
 	<div data-role="page">
 		<div data-role="header">
-			<a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+			<a href="./home" data-ajax='false' class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
 			<h1><%= title %></h1>
 		</div>
 		<div data-role="main" class="ui-content">
 			<p style="color:red;"><%= info %></p>
-			<form action="./publishLog" method="post" class="container1">
+			<form action="./publishLog" method="post" class="container1" name="form1" data-ajax='false'>
 				<input class="inputArea" type="text" placeholder="标题"  name="title"/><br/>
 				<textarea class="inputArea textarea xheditor" placeholder="正文" name="content"></textarea><br/><br/>
 				<input class="login" type="submit" value="发布" />
@@ -56,11 +56,8 @@
         function clearContent(event) {
             event.preventDefault();
 			event.stopPropagation();        
-            var nodeArr = document.getElementsByClassName("inputArea");
-            Array.prototype.forEach.call(nodeArr, function(item) {
-                item.value = null;
-            });
 			//其实form有reset方法
+            document.form1.reset();
         }	
     </script>
   </body>

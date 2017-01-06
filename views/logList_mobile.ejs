@@ -12,7 +12,7 @@
   <body>
   <div data-role="page" class="container">
     <div data-role="header">
-        <a href="./home" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
+        <a href="./home" data-ajax='false' class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">主页</a>
         <h1><%= title %></h1>
     </div>
     <div data-role="main" class="ui-content" id="myLog">
@@ -30,7 +30,7 @@
             			<div class="cont">标题：<%= item.title %></div>
             			<div class="cont">作者：<%= item.author %></div>
             			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
-            			<div class="cont">内容：<%= item.content %></div>
+            			<div class="cont">内容：<%- item.content %></div>
             		</div>
                 </li>
 		    <% }); %> 
@@ -41,8 +41,8 @@
     <script>
         function displayLog(event) {
             var url = "./logDetail_mobile?t="
-                      +encodeURIComponent(event.target.parentNode.childNodes[1].innerText)
-                      +"&d="+encodeURIComponent(event.target.parentNode.childNodes[7].innerText);
+                      +encodeURIComponent(event.target.parentNode.childNodes[1].innerHTML)
+                      +"&d="+encodeURIComponent(event.target.parentNode.childNodes[7].innerHTML);
             window.open(url,"_self");
         }
         function enterInput(event) {
