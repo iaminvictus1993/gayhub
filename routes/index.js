@@ -65,7 +65,7 @@ router.get('/log', function(req, res, next) {
 			return;
 		}
 		if(!docs || docs.length === 0) {
-			res.render('log', {
+			res.render('log_mobile', {
 				title: '新建日志',
 				logSource: []
 			});	
@@ -99,7 +99,8 @@ router.get('/logList', function(req, res, next) {
     var search = encodeURIComponent(req.query.search);//汉字，数据库中的值是经过编码处理的
     var condition = {};
     condition.$and = [];
-    condition.$and.push({userId: req.session.user._id});
+    var userId = req.query.userId ? req.query.userId : req.session.user._id;
+    condition.$and.push({userId: userId});
     if((search != "undefined") && (search != "")) {
         var orcond = [];
         orcond.push({"title": {$regex: search}});
@@ -113,7 +114,7 @@ router.get('/logList', function(req, res, next) {
 		}
         //若没有搜索数据，则返回空数据页面
         if(search && (!totaldocs || totaldocs.length === 0)) {
-			res.render('logList', {
+			res.render('logList_mobile', {
 				title: '日志列表',
 				logSource: [],
 				totalSource: []
@@ -191,15 +192,30 @@ router.get('/viewLog', function(req, res, next) {
 	}catch(err) {
 				console.log(err);
 	}
+
+    var condition = {
+        $and: []
+    };
+    var search = encodeURIComponent(req.query.search);
+    condition.$and.push({userId: req.query.id || req.query.userId});
+    if((search != "undefined") && (search != "")) {
+        var orcond = [];
+        orcond.push({"title": {$regex: search}});
+        orcond.push({"content": {$regex: search}});
+        condition.$and.push({$or: orcond});
+    }
+    //return res.send(condition);
 	var log = global.offerModel.getModel('log');
     //获取总日志数
-	log.find({
-		userId: req.query.id
-	}).exec(function(err, totaldocs) {
+	log.find(condition).exec(function(err, totaldocs) {
 		if(err) {
 			res.send(err);
 			return;
 		}
+        if(search && (!totaldocs || totaldocs.length === 0)) {
+            res.send("没");
+            return;
+        }
 		if(!totaldocs || totaldocs.length === 0) {
 			req.flash('info', "对方暂未日志数据");
 			res.redirect("/home");
@@ -207,9 +223,7 @@ router.get('/viewLog', function(req, res, next) {
 			return;
 		}
         //实现分页操作
-		log.find({
-			userId: req.query.id
-		}).skip(skipNum).limit(8).sort("-time").exec(function(err, docs) {
+		log.find(condition).skip(skipNum).limit(8).sort("-time").exec(function(err, docs) {
 			if(err) {
 				res.send(err);
 				return;

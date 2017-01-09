@@ -46,6 +46,7 @@
     <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>
   </div>
     <script>
+        var userId = location.search.slice(location.search.indexOf("id")!=-1?location.search.indexOf("id")+3:location.search.indexOf("userId")+7);
         function displayLog(event) {
             var url = "./logDetail_mobile?t="
                       +encodeURIComponent(event.target.parentNode.childNodes[1].innerHTML)
@@ -63,7 +64,7 @@
             }
             if(keynum == 13) {
                 var searchValue = document.getElementById("input").value;
-                window.open("./logList?search="+searchValue,"_self");
+                window.open("./viewLog?search="+searchValue+"&userId="+userId,"_self");
             }
         } 
         window.onload = function() {
@@ -81,7 +82,7 @@
                 event.preventDefault();
                 event.stopPropagation();
                 var searchValue = document.getElementById("input").value;
-                window.open("./logList?search="+searchValue,"_self");
+                window.open("./viewLog?search="+searchValue+"&userId="+userId,"_self");
             };
         };
         $(document).ready(function() {
