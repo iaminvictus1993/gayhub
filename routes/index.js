@@ -192,14 +192,17 @@ router.get('/home', function(req, res, next) {
 
 //渲染查看他人日志页面
 router.get('/viewLog', function(req, res, next) {
-	if(!req.session.user) {
+	if(!req.session.user && req.query.type != "minApp") {
 		req.flash('info', "用户未登录，请登录！");
 		res.redirect("/home");
 		//res.send("<h1>用户未登录</h1><br/><a href='./home'>前往登录</a>");
 		return;
 	}    
 	try{
-		var currentPage = req.query.page;
+		var currentPage;
+		if(req.query.page) {
+			currentPage = req.query.page;
+		}
 		var skipNum = currentPage !== 1 ? (currentPage-1)*8 : 0;
 		// return res.send(skipNum);
 	}catch(err) {
@@ -209,7 +212,7 @@ router.get('/viewLog', function(req, res, next) {
     var condition = {
         $and: []
     };
-    var search = encodeURIComponent(req.query.search);
+    var search = req.query.search ? encodeURIComponent(req.query.search) : "";
     condition.$and.push({userId: req.query.id || req.query.userId});
     if((search != "undefined") && (search != "")) {
         var orcond = [];
@@ -217,12 +220,20 @@ router.get('/viewLog', function(req, res, next) {
         orcond.push({"content": {$regex: search}});
         condition.$and.push({$or: orcond});
     }
+	if(condition.$and.length == 0) {
+		condition = {};
+	}
     //return res.send(condition);
 	var log = global.offerModel.getModel('log');
     //获取总日志数
 	log.find(condition).exec(function(err, totaldocs) {
 		if(err) {
 			res.send(err);
+			return;
+		}
+		//小程序返回数据，不渲染
+		if(req.query.type == "minApp") {
+			res.send(totaldocs);
 			return;
 		}
         if(search && (!totaldocs || totaldocs.length === 0)) {
