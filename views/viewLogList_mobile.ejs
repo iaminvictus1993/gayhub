@@ -21,26 +21,28 @@
             <input type="text" id="input" placeholder="支持按标题和内容模糊查找" onkeydown="enterInput(event);" />
             <input type="button" id="go" value="搜索日志"/>
         </div>
-        <%  for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
-            <a href=<%= originalUrl+"&page="+ i %>> <%= i %></a>
-        <%}%>
+        <%  if(totalSource.length > 0) {
+                for(var i=1; i<=Math.ceil(totalSource.length/8); i++) {%>
+                <a href=<%= originalUrl+"&page="+ i %>> <%= i %></a>
+        <%}}%>
         <ul data-role="listview" data-inset="true" >
-		    <%logSource.forEach(function(item, i) { %>
-                <li>
-                    <div id="container">
-                        <div class="feed" id="feed<%= i+1 %>" >
-                            <div class="heart" style="background-position:<%=  praisedPersonArr[i].indexOf(sessionName) != -1?-2200:0 %>px" id="like<%= i+1 %>" rel="<%=  praisedPersonArr[i].indexOf(sessionName) != -1?'unlike':'like' %>" ></div> <div class="likeCount" id="likeCount<%= i+1 %>"><%= item.praise %></div>
+		    <%if(logSource.length > 0) {
+                logSource.forEach(function(item, i) { %>
+                    <li>
+                        <div id="container">
+                            <div class="feed" id="feed<%= i+1 %>" >
+                                <div class="heart" style="background-position:<%=  praisedPersonArr[i].indexOf(sessionName) != -1?-2200:0 %>px" id="like<%= i+1 %>" rel="<%=  praisedPersonArr[i].indexOf(sessionName) != -1?'unlike':'like' %>" ></div> <div class="likeCount" id="likeCount<%= i+1 %>"><%= item.praise %></div>
+                            </div>
                         </div>
-                    </div>
-            		<div id="hah" onclick="displayLog(event);">
-            			<div class="cont">标题：<%= item.title %></div>
-            			<div class="cont">作者：<%= item.author %></div>
-            			<div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
-            			<div class="cont">内容：<%- item.content %></div>
-                        <div class="cont">logId：<%= item._id %></div>
-            		</div>
-                </li>
-		    <% }); %> 
+                        <div id="hah" onclick="displayLog(event);">
+                            <div class="cont">标题：<%= item.title %></div>
+                            <div class="cont">作者：<%= item.author %></div>
+                            <div class="cont">发布时间：<%= item.time.toLocaleString() %></div>
+                            <div class="cont">内容：<%- item.content %></div>
+                            <div class="cont">logId：<%= item._id %></div>
+                        </div>
+                    </li>
+		    <% });} %> 
         </ul>
 	</div>
     <input type="button" id="newLog" onclick='window.open("./log","_self");return false;' value="新建日志"/>

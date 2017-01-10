@@ -171,6 +171,19 @@ router.get('/home', function(req, res, next) {
                 return;
 			}
             var sessionUser = req.session.user?req.session.user:{userName: '请登录'};
+            //小程序返回数据，不渲染
+            if(req.query.type == "minApp") {
+                //小程序绑定数据{{}}中不能执行解码操作
+                docs.forEach(function(item) {
+                    item.logoPath = decodeURIComponent(item.logoPath);
+                    //注意转义
+                    var a = item.logoPath.split("\\");
+                    item.logoPath = a.join("/");
+                    item.logoPath = item.logoPath.replace("/","//");
+                });
+                res.send(docs);
+                return;
+            }
 			res.render('home_mobile', {title: '主页面', source:docs, user: sessionUser});
 		});
 
@@ -213,7 +226,14 @@ router.get('/viewLog', function(req, res, next) {
 			return;
 		}
         if(search && (!totaldocs || totaldocs.length === 0)) {
-            res.send("没");
+			res.render('viewLogList_mobile', {
+				title: '日志列表',
+				logSource: [],
+				totalSource: [],
+				originalUrl: "."+req.originalUrl.slice(0,36),
+				sessionName: req.session.user.name,
+				praisedPersonArr: []
+			});	
             return;
         }
 		if(!totaldocs || totaldocs.length === 0) {
@@ -256,7 +276,6 @@ router.get('/viewLog', function(req, res, next) {
 				totalSource: totaldocs,
 				originalUrl: "."+req.originalUrl.slice(0,36),
 				sessionName: req.session.user.name,
-				//json无效，所以不得已用eval
 				praisedPersonArr: arr
 			});		
 		});		
@@ -413,7 +432,7 @@ router.post('/sendEmailCodeForChangePWD', function(req, res, next) {
 			return;
 		}
 		req.session.emailCodeForCPD = randomCode;
-		//设定修改密码邮箱验证码有效时间，但是TMD不是时间不准，就是完全失效。
+		//设定修改密码邮箱验证码有效时间，但是TMD不是时间不准，就是完全失效。(考虑用schedule模块)
 		setTimeout(function() {
 			if(!req.session.emailCodeForCPD) {
 				console.log('not exist');
