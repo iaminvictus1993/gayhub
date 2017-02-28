@@ -2,9 +2,9 @@
 practice project for node mongodb redis mongoose express ejs.
 user data stored in mongodb. session stored in redis. use ejs display front-end
 
-### 所用技术
-有node,mongodb,redis,mongoose,express,ejs,git.
-master分支前端页面用原js生编写，mobile分支前端页面所用前端框架jquerymobile
+### 所用技术及代码简介
++ node,mongodb,redis,mongoose,express,ejs,git.
++ master分支前端页面用原生js编写，mobile分支前端页面所用前端框架jquerymobile
 
 ### 实现功能
 + 登录、注册、修改密码（加密，绑定邮箱，验证码登录）
