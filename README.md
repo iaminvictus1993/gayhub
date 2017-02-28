@@ -18,4 +18,4 @@ master分支前端页面用原js生编写，mobile分支前端页面所用前端
 + (git checkout mobile/master)
 + start local mongodb & redis
 + npm start
-+ visit localhost:30000
++ visit localhost:3000
